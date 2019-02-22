@@ -34,9 +34,6 @@ function dbAdapter(sequelize, models) {
             exclude: { //changed
                 create: [],
                 fetch: ["sha_pass_hash"],
-            },
-            include: {
-                picture: "pictureType"
             }
         },
         types: {
@@ -84,11 +81,22 @@ function dbAdapter(sequelize, models) {
         }
     }
 
-    account.associate = function (models) {
-        account.hasMany(models.account_access, {
-            foreignKey: 'id'
-        })
-    }
+
+    account.hasMany(models.account_access, {
+        as: "account_access",
+        foreignKey: 'id',
+        sourceKey: 'id',
+        otherKey: 'id',
+        targetKey: 'id'
+    })
+
+    models.account_access.belongsTo(account, {
+        as: "account_rel",
+        foreignKey: 'id',
+        sourceKey: 'id',
+        otherKey: 'id',
+        targetKey: 'id'
+    })
 }
 
 
