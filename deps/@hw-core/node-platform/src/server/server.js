@@ -121,7 +121,7 @@ export default class Server {
         this.hwApolloServer.runServer();
     }
 
-    async run(withApollo = true) {
+    async run(withApollo = true, withSync = true) {
         const conf = this.conf;
         this.loadModules();
 
@@ -133,7 +133,8 @@ export default class Server {
             process.exit(0);
             this.evtMgr.emit(Events.after_init, this);
         } else {
-            await this.dbSync(this.db);
+            if (withSync)
+                await this.dbSync(this.db);
 
             this.evtMgr.emit(Events.after_init, this);
             this.runServer(withApollo);

@@ -1,11 +1,12 @@
 {
-  "name": "@hw-core/universal-node",
+  "name": "maelstrom-app-server",
   "version": "1.0.0",
   "description": "Boilerplate for Universal NodeJS server",
   "main": "src/server/index.js",
   "author": "hyperweb2",
   "license": "MIT",
   "scripts": {
+    "db:generate": "node --preserve-symlinks ./apps/generator/index.js",
     "db:create": "npm run installer && sequelize db:create",
     "db:migrate": "sequelize db:migrate",
     "db:seed": "sequelize db:seed:all",
@@ -58,5 +59,8 @@
   "_moduleAliases": {
     "@this": ".",
     "@hw-core": "deps/@hw-core"
+  },
+  "devDependencies": {
+    "sequelize-auto": "^0.4.29"
   }
 }

@@ -1,8 +1,10 @@
 import {
-    GraphQLSchema
+    GraphQLSchema,
+    printSchema
 } from 'graphql';
 import {
-    ApolloServer
+    ApolloServer,
+    mergeSchemas
 } from 'apollo-server-express';
 
 import sgs from "sequelize-graphql-schema/src/sequelize-graphql-schema";
@@ -47,8 +49,14 @@ export default class HwApolloExpress {
 
         this.evtMgr = evtMgr;
 
+        this.schemas = []
+
         Object.freeze(this.expressApp)
         Object.freeze(this.evtMgr)
+    }
+
+    setSchemas(schemas) {
+        this.schemas = schemas;
     }
 
     /**
@@ -58,16 +66,19 @@ export default class HwApolloExpress {
     initApolloServer(db) {
         this.evtMgr.emit(Events.before_apollo_init, this);
 
+        var schemas = [...this.schemas];
+
         const autogenSchema = new GraphQLSchema(sgs(this.sgsConf).generateSchema(db.models));
 
-        /*
+        schemas.push(autogenSchema);
+
         var mergedSchema = mergeSchemas({
-            schemas: [rootTypeDef, autogenSchema]
-        });*/
+            schemas
+        });
 
         const server = new ApolloServer({
             cors: true,
-            schema: autogenSchema,
+            schema: mergedSchema,
             context: async ({
                 req
             }) => {
