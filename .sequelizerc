@@ -1,0 +1,7 @@
+var path = require('path');
+
+module.exports = {
+  'config': 'src/server/sequelize-cli.js',
+  'migrations-path': 'src/database/migrations',
+  'seeders-path': 'src/database/seeders'
+}
