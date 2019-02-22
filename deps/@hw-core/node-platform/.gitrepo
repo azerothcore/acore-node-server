@@ -6,7 +6,7 @@
 [subrepo]
 	remote = https://gitlab.com/hw-core/node-platform
 	branch = master
-	commit = 02d9ff18774d92fef9f9af9e6379fdcdb0b47386
-	parent = e8a5736d89156a441c54519d371ecea60468b9ee
+	commit = 348ffb3e8829a541abd7d68383863c12157c4f69
+	parent = cbedf4df7c43d4fbaa5503b409c95cb5b06e4480
 	method = merge
 	cmdver = 0.4.0
