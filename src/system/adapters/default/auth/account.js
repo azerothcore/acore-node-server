@@ -83,19 +83,11 @@ function dbAdapter(sequelize, models) {
 
 
     account.hasMany(models.account_access, {
-        as: "account_access",
-        foreignKey: 'id',
-        sourceKey: 'id',
-        otherKey: 'id',
-        targetKey: 'id'
+        foreignKey: 'id'
     })
 
     models.account_access.belongsTo(account, {
-        as: "account_rel",
-        foreignKey: 'id',
-        sourceKey: 'id',
-        otherKey: 'id',
-        targetKey: 'id'
+        foreignKey: 'id'
     })
 }
 
