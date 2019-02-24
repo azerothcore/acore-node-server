@@ -6,7 +6,7 @@
 [subrepo]
 	remote = https://github.com/yehonal/sequelize-graphql-schema
 	branch = develop
-	commit = 8351c72c356ed7ca8e3c4f6a9a1b3cbf058e73cf
+	commit = 1ba64ec46f3fe3393ac887204990ad0e27d18abd
 	method = merge
 	cmdver = 0.4.0
-	parent = 98b546b35fcfab3bb6c82af8ece7d59848e6613f
+	parent = 6dc04c99efc5878e6e490a5da98bcad1f9291bb6
