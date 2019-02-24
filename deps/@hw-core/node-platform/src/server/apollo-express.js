@@ -82,7 +82,7 @@ export default class HwApolloExpress {
             context: async ({
                 req
             }) => {
-                var decoded = verifyToken(req);
+                var decoded = verifyToken(req, this.conf.secret);
                 if (decoded) {
                     var user = await db.models.User.findOne({
                         where: {
