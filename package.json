@@ -54,12 +54,13 @@
   "author": "azerothcore",
   "license": "ISC",
   "devDependencies": {
+    "husky": "^3.1.0",
     "prettier-eslint": "^9.0.1",
-    "husky": "^3.1.0"
+    "typedoc": "^0.17.6"
   },
   "_moduleAliases": {
     "$this/src": "./src",
-    "@" : "./src"
+    "@": "./src"
   },
   "lint-staged": {
     "src/**/*.{ts, tsx, js, jsx}": [
