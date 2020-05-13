@@ -62,7 +62,7 @@
     "@" : "./src"
   },
   "lint-staged": {
-    "src/**": [
+    "src/**/*.(jsx?|tsx?)": [
       "npm run lint -- --fix",
       "git add"
     ]
