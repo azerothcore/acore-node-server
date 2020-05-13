@@ -1,0 +1,29 @@
+{
+  "extends": "./jsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "preserveSymlinks": true,
+    "maxNodeModuleJsDepth": 0,
+    "esModuleInterop": true,
+    "importHelpers": true,
+    "sourceMap": true,
+    "target": "es5",
+    "outDir": "./dist",
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
+    "baseUrl": "./",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "$this/*": [
+        "./*"
+      ],
+    }
+  },
+  "include": [
+    "./src/*",
+  ]
+}

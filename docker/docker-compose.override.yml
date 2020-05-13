@@ -1,0 +1,17 @@
+version: "3.7"
+services:
+  node-server:
+    working_dir: /usr/src/service/servicemodule
+    volumes:
+      - type: bind
+        source: ../
+        target: /usr/src/service
+      - type: bind
+        source: ./var/packagehash.txt
+        target: /usr/src/service/servicemodule/packagehash.txt
+      - type: volume
+        source: node_modules
+        target: /usr/src/service/servicemodule/node_modules
+        volume:
+          nocopy: true
+

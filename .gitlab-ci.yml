@@ -1,0 +1,107 @@
+image: google/cloud-sdk:272.0.0-alpine
+
+stages:
+  - test
+  - pages
+
+cache:
+  paths:
+    - google-cloud-sdk/
+
+services:
+  - docker:dind
+
+variables:
+  DOCKER_DRIVER: overlay2
+  SERVICE: servicemodule
+  PAGES_BRANCH: master
+  IMAGE_ALPHA: "gcr.io/$GCLOUD_PROJECT_ALPHA/${SERVICE}-${CI_COMMIT_SHORT_SHA}"
+  RELEASE_ALPHA: "gcr.io/$GCLOUD_PROJECT_ALPHA/${SERVICE}-${CI_COMMIT_REF_SLUG}"
+  IMAGE_BETA: "gcr.io/$GCLOUD_PROJECT_BETA/${SERVICE}-${CI_COMMIT_SHORT_SHA}"
+  RELEASE_BETA: "gcr.io/$GCLOUD_PROJECT_BETA/${SERVICE}-${CI_COMMIT_REF_SLUG}"
+  IMAGE_PRODUCTION: "gcr.io/$GCLOUD_PROJECT_PRODUCTION/${SERVICE}-${CI_COMMIT_SHORT_SHA}"
+  RELEASE_PRODUCTION: "gcr.io/$GCLOUD_PROJECT_PRODUCTION/${SERVICE}-${CI_COMMIT_REF_SLUG}"
+
+before_script:
+  - |
+    # Install deps for pushing to gcloud
+    apk add --update git curl make ca-certificates openssl openssh-client python bash nodejs npm docker
+    update-ca-certificates
+    # Install SSH key and authorize gcloud
+    echo "Creating ${HOME}/.ssh"
+    mkdir -p ${HOME}/.ssh
+    echo "${YI_SSH_KEY}" >> id_ed25519
+    chmod 600 id_ed25519
+    ssh-keygen -y -f id_ed25519 > id_ed25519.pub
+    cp id_ed25519 ${HOME}/.ssh
+    cp id_ed25519.pub ${HOME}/.ssh
+    ssh-keyscan -H gitlab.89109.nl > ${HOME}/.ssh/known_hosts
+
+Linting Test/Alpha:
+  stage: test
+  retry: 2
+  environment:
+    name: alpha
+  except: # execute it on alpha and all PRs
+    - master
+    - beta
+  script:
+    - docker build --pull -t $IMAGE_ALPHA . -f docker/Dockerfile
+    - docker run $IMAGE_ALPHA npm run linter
+    - docker run $IMAGE_ALPHA npm run test
+
+Linting Beta:
+  stage: test
+  retry: 2
+  environment:
+    name: beta
+  only:
+    refs:
+      - beta
+  script:
+    - docker build --pull -t $IMAGE_BETA . -f docker/Dockerfile
+    - docker run $IMAGE_BETA npm run linter
+    - docker run $IMAGE_BETA npm run test
+
+Linting Production:
+  stage: test
+  retry: 2
+  environment:
+    name: production
+  only:
+    refs:
+      - master
+  script:
+    - docker build --pull -t $IMAGE_PRODUCTION . -f docker/Dockerfile
+    - docker run $IMAGE_PRODUCTION npm run linter
+    - docker run $IMAGE_PRODUCTION npm run test
+
+pages:
+  image: ruby:2.7.0-alpine
+  stage: pages
+
+  environment:
+    name: alpha
+
+  variables:
+    JEKYLL_ENV: production
+    LC_ALL: C.UTF-8
+    BUNDLE_GEMFILE: .env-files/Gemfile.gitlab
+    ENABLE_SERVICE_DEPLOY: "false"
+
+  script:
+    - apk add --update build-base libxml2-dev libxslt-dev postgresql-dev
+    - rm -rf /var/cache/apk/*
+    - bundle config build.nokogiri --use-system-libraries
+    - npm install
+    - npm run doc
+    - npm run test
+    - cd docs
+    - bundle install --gemfile=.env-files/Gemfile.gitlab
+    - bundle exec jekyll build -d ../public
+  artifacts:
+    paths:
+      - public
+  only:
+    variables:
+      - $PAGES_BRANCH == $CI_COMMIT_BRANCH

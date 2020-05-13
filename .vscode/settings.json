@@ -1,0 +1,19 @@
+{
+    "editor.autoIndent": "none",
+    "[yaml]": {
+        "editor.autoIndent": "none"
+    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "eslint.validate": [
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact",
+        "vue"
+    ],
+    "npm-intellisense.importES6": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "files.eol": "\n"
+}

@@ -1,0 +1,71 @@
+{
+  "name": "@azerothcore/node-servicemodule",
+  "description": "A module that exposes API to implement services",
+  "version": "0.0.3",
+  "engines": {
+    "node": "12.x"
+  },
+  "main": "src/index.ts",
+  "dependencies": {
+    "@apollo/federation": "^0.11.2",
+    "@azerothcore/js-common": "git+https://github.com/azerothcore/js-common.git",
+    "@types/node": "^13.13.5",
+    "apollo-cache-inmemory": "^1.6.5",
+    "apollo-client": "^2.6.8",
+    "apollo-link-error": "^1.1.12",
+    "apollo-link-http": "^1.5.16",
+    "apollo-server": "^2.9.13",
+    "apollo-server-fastify": "^2.9.8",
+    "base64-to-image": "^1.0.2",
+    "dataloader": "^2.0.0",
+    "fastify": "^2.10.0",
+    "fastify-cors": "^2.2.0",
+    "fastify-helmet": "^3.0.2",
+    "fastify-plugin": "^1.6.0",
+    "fastify-swagger": "^2.5.0",
+    "graphcraft": "^1.0.0-beta.21",
+    "graphql": "^14.5.8",
+    "graphql-transform-federation": "^2.0.1",
+    "graphql-type-json": "^0.3.1",
+    "merge-graphql-schemas": "^1.7.6",
+    "node-fetch": "^2.6.0",
+    "nodemon": "^1.19.4",
+    "noderouter": "https://github.com/azerothcore/noderouter.git",
+    "sequelize": "^5.21.1",
+    "sofa-api": "^0.6.0",
+    "stream-to-array": "^2.3.0",
+    "ts-node": "^8.10.1"
+  },
+  "scripts": {
+    "start": "npx install-changed && nodemon --exec 'ts-node' -r dotenv/config src/run.ts",
+    "start:docker": "docker-compose -f docker-compose.yml -f docker/docker-compose.override.yml up -d && docker-compose exec node-server bash || docker-compose stop",
+    "start:docker:prod": "docker-compose -f docker-compose.yml -f docker/docker-compose.override.yml -f docker/docker-compose.prod.yml up -d && docker-compose exec node-server bash || docker-compose stop",
+    "lint": "eslint .",
+    "test": "jest",
+    "compile": "tsc",
+    "docs": "typedoc --out docs/jsdoc src",
+    "build": "webpack",
+    "check": "npm run test && npm run compile && npm run lint",
+    "dist": "npm run check && npm run build",
+    "remove:modules": "rm -rf node_modules package-lock.json packagehash.txt",
+    "prepublishOnly": "npm run check",
+    "linkdeps": "rm -rf node_modules/@azerothcore/js-common/src && ln -s ../../../../js-common/src/ ./node_modules/@azerothcore/js-common/src"
+  },
+  "author": "azerothcore",
+  "license": "ISC",
+  "devDependencies": {
+    "prettier-eslint": "^9.0.1",
+    "husky": "^3.1.0"
+  },
+  "lint-staged": {
+    "**/*.(js)": [
+      "npm run linter -- --fix",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  }
+}
