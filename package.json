@@ -63,7 +63,7 @@
     "@": "./src"
   },
   "lint-staged": {
-    "src/**/*.(jsx?|tsx?)": [
+    "src/**/*.{ts, tsx, js, jsx}": [
       "npm run lint -- --fix",
       "git add"
     ]
