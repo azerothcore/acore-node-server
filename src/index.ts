@@ -6,6 +6,10 @@
  * includes this file itself.
  */
 
+import registerAlias from '@azerothcore/js-common/src/module-alias';
+
+registerAlias(__dirname + '/../');
+
 export default {
   // we must require it inside a function
   // to avoid the automatic inclusion of service.js
