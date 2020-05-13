@@ -58,7 +58,7 @@
     "husky": "^3.1.0"
   },
   "lint-staged": {
-    "src/**": [
+    "src/**/*.(jsx?|tsx?)": [
       "npm run lint -- --fix",
       "git add"
     ]
