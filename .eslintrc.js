@@ -1,21 +1,21 @@
 module.exports = {
   env: {
-    // supporting all kind of environment 
+    // supporting all kind of environment
     // to build universal lib
     browser: true,
     commonjs: true,
     es6: true,
     node: true,
   },
-  parser: "@typescript-eslint/parser",
+  parser: '@typescript-eslint/parser',
   extends: [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended",
+    'eslint:recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
     'google', // google style guide
     'plugin:jest/recommended', // jest support
     'plugin:jest/style', // style for jest files
-    'plugin:jsdoc/recommended', // jsdoc rules to document code 
+    'plugin:jsdoc/recommended', // jsdoc rules to document code
   ],
   parserOptions: {
     ecmaVersion: 2018,
@@ -29,19 +29,21 @@ module.exports = {
     'valid-jsdoc': 0,
     'max-len': 0, // disable max length check of code lines
     // disable the rule for all files
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "new-cap": 0,
-    "jsdoc/require-returns" : "off",
-    "jsdoc/require-param-description" : "off"
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/camelcase': 'off',
+    'jsdoc/require-param-type': 'off',
+    'new-cap': 0,
+    'jsdoc/require-returns': 'off',
+    'jsdoc/require-param-description': 'off',
   },
-  "overrides": [
+  overrides: [
     {
       // enable the rule specifically for TypeScript files
-      "files": ["*.ts", "*.tsx"],
-      "rules": {
-        "@typescript-eslint/explicit-function-return-type": ["error"]
-      }
-    }
+      files: ['*.ts', '*.tsx'],
+      rules: {
+        '@typescript-eslint/explicit-function-return-type': ['error'],
+      },
+    },
   ],
   settings: {
     jsdoc: {
