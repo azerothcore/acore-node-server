@@ -6,9 +6,6 @@ services:
       - type: bind
         source: ../
         target: /usr/src/service
-      - type: bind
-        source: ./var/packagehash.txt
-        target: /usr/src/service/servicemodule/packagehash.txt
       - type: volume
         source: node_modules
         target: /usr/src/service/servicemodule/node_modules
