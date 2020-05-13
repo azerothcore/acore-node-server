@@ -37,7 +37,7 @@
     "ts-node": "^8.10.1"
   },
   "scripts": {
-    "start": "nodemon --exec 'ts-node' -r dotenv/config src/run.ts",
+    "start": "nodemon --exec 'npx ts-node' -r dotenv/config src/run.ts",
     "start:docker": "docker-compose -f docker-compose.yml -f docker/docker-compose.override.yml up -d && docker-compose exec node-server bash || docker-compose stop",
     "start:docker:prod": "docker-compose -f docker-compose.yml -f docker/docker-compose.override.yml -f docker/docker-compose.prod.yml up -d && docker-compose exec node-server bash || docker-compose stop",
     "lint": "eslint .",
