@@ -85,4 +85,10 @@ package-lock.json
 packagehash.txt
 
 var/*
-!var/.gitkeep
+!var/.gitkeep 
+
+src/logic/adapters/*
+!src/logic/adapters/default
+
+src/database/entities/realms/*
+!src/database/entities/realms/default

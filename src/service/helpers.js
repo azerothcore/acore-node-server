@@ -1,15 +1,15 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import util from 'util';
-import fs from 'fs';
+// import util from 'util';
+// import fs from 'fs';
 import {AuthenticationError} from 'apollo-server';
 export const ROLES = {
   ROLE_USER: 0,
   ROLE_ADMIN: 1,
 };
 
-const srvfolder = 'srv/';
-const validMimeType = ['image/jpeg', 'image/png', 'image/tiff', 'image/webp'];
+// const srvfolder = 'srv/';
+// const validMimeType = ['image/jpeg', 'image/png', 'image/tiff', 'image/webp'];
 
 /**
  * @param user
@@ -143,6 +143,7 @@ if (sys.noAuth) {
  * @param {string}   model          name of the model.
  * @param {string}   path           path where to save the file.
  */
+/*
 export function uploadFile(model, path) {
   // init folder if not exists
   fs.mkdir(srvfolder + path, {recursive: true}, (err) => {
@@ -157,7 +158,7 @@ export function uploadFile(model, path) {
         const {
           createReadStream,
           filename,
-          mimetype /* , encoding,*/,
+          mimetype , encoding,
         } = await data[model].picture.file;
 
         if (!validMimeType.includes(mimetype)) {
@@ -170,7 +171,7 @@ export function uploadFile(model, path) {
 
         let buf = '';
 
-        const parts = await toArray(createReadStream());
+        const parts = await toArray(createReadStream()); //??
         const buffers = parts.map((part) =>
           util.isBuffer(part) ? part : Buffer.from(part),
         );
@@ -201,6 +202,7 @@ export function uploadFile(model, path) {
     return Promise.resolve();
   };
 }
+*/
 
 /**
  *
