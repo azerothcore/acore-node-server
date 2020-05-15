@@ -24,158 +24,165 @@
 /**
  * @enum {ROLES_ENUM}
  */
-import { ApolloError } from "apollo-server"
-import errors from "@database/errors"
+import {ApolloError} from 'apollo-server';
+import errors from '@database/errors';
 
 export const ROLES = {
-    ROLE_USER: 0,
-    ROLE_ADMIN: 1,
-    ROLE_SUPERADMIN: 2
-}
+  ROLE_USER: 0,
+  ROLE_ADMIN: 1,
+  ROLE_SUPERADMIN: 2,
+};
 
 
-let sys = {
-    noAuth: false
-}
+const sys = {
+  noAuth: false,
+};
 
 class ACL {
-    constructor(field = "role", roles = ROLES) {
-        this.field = field;
-        this.roles = roles;
-        let arr = Object.values(roles);
-        this.min = Math.min(...arr);
+  constructor(field = 'role', roles = ROLES) {
+    this.field = field;
+    this.roles = roles;
+    const arr = Object.values(roles);
+    this.min = Math.min(...arr);
+  }
+
+  setLimit(globalLimit) { // limit queries
+    return async (obj, data, context, info) => {
+      const limit = data.limit;
+
+      if (limit <= globalLimit) return Promise.resolve();
+      else if (!limit || limit >= globalLimit) {
+        data.limit = globalLimit;
+        return Promise.resolve();
+      }
+
+      throw Error('Limit exceeded');
+    };
+  }
+
+
+  checkLevel(user, levels) {
+    if (!Array.isArray(levels)) {
+      return this.getLevel(user) >= levels;
     }
 
-    setLimit(globalLimit) { // limit queries
-        return async (obj, data, context, info) => {
-            let limit = data.limit;
+    return levels.indexOf(this.getLevel(user)) >= 0;
+  }
 
-            if (limit <= globalLimit) return Promise.resolve();
-            else if (!limit || limit >= globalLimit) {
-                data.limit = globalLimit
-                return Promise.resolve();
-            }
+  getLevel(user) {
+    return user[this.field];
+  }
 
-            throw Error("Limit exceeded")
+  /**
+   * This filter check if the user set in server context (logged with jwt) is the same
+   * subject of the query/mutation. It allows you to avoid fetching/editing of data not
+   * owned by the user.
+   *
+   * @param {string} [model=undefined] : model name where get the field about user id (field parameter)
+   * @param {string} [field=undefined] : you can specify model and field where retrieve userid from mutation data,
+   *  otherwise it tries to get from where
+   * @returns {SGSMiddleware} Middleware for graphql hooks/api
+   */
+  sameUser(model, field) {
+    return (obj, data, context, info) => {
+      let id;
+      if (model && field && data[model][field]) {
+        id = data[model][field];
+      } else {
+        id = data.where ? (field ? data.where[field] : data.where.id) : (data[field] ? data[field] : data.id);
+      }
 
+      if (context.user.id == id) {
+        return Promise.resolve();
+      }
+
+      throw Error('Only admin or owner are authorized here!');
+    };
+  }
+
+  /**
+   * Middleware for sequelize-graphql-schema hooks
+   *
+   * @param {ROLES[]|ROLES_ENUM} roles
+   * @param {SGSMiddleware} [filter=undefined] - function to filter isAllowed result
+   */
+  isAllowed(roles, filter) {
+    return async (obj, data, context, info) => {
+      if (sys.noAuth) {
+        return Promise.resolve();
+      }
+
+      if (!context.user) throw Error('User not found');
+      if (!this.checkLevel(context.user, roles)) throw Error('Permission denied for user:' + context.user.id);
+
+      if (filter) {
+        return await filter(obj, data, context, info);
+      }
+
+      return Promise.resolve();
+    };
+  }
+
+  /**
+   * restric access to certain fields
+   *
+   * @param roles
+   * @param inclusive
+   * @param fields
+   */
+  fieldAccess(roles, inclusive, fields) {
+    return async (obj, data, context, info) => {
+      if (sys.noAuth) {
+        return Promise.resolve();
+      }
+      if (!context.user) throw Error('User not found');
+      if (!this.checkLevel(context.user, roles)) throw Error('Permission denied for user:' + context.user.id);
+
+      const args = info.fieldNodes[0].selectionSet.selections.map((selection) => selection.name.value);
+      if (inclusive) { // fields should contain all fields
+        var intersec = fields.filter((value) => -1 !== args.indexOf(value));
+        if (intersec.length === args.length) {
+          return Promise.resolve();
         }
+      } else { // fields contains banned fields
+        var intersec = fields.filter((value) => -1 !== args.indexOf(value));
+        if (intersec.lenght === 0) return Promise.resolve();
+      }
+      throw new ApolloError(errors.permission.message, errors.permission.code);// throw Error("You can't see these fields");
+    };
+  }
+
+  sameUserHierachy(model, field, data, context) {
+    console.log(data);
+    console.log(model);
+    console.log(field);
+    let id;
+    if (data && data.id) {
+      id = data.id;
+    } else if (model && field && data[model] && data[model][field]) {
+      id = data[model][field];
+    } else {
+      id = data.where ? (field ? data.where[field] : data.where.id) : (data[field] ? data[field] : data.id);
     }
 
-
-    checkLevel(user, levels) {
-        if (!Array.isArray(levels))
-            return this.getLevel(user) >= levels;
-
-        return levels.indexOf(this.getLevel(user)) >= 0;
+    if (context.user.id == id) {
+      return Promise.resolve();
     }
 
-    getLevel(user) {
-        return user[this.field];
-    }
+    throw Error('Only admin or owner are authorized here!');
+  }
 
-    /**
-     * This filter check if the user set in server context (logged with jwt) is the same
-     * subject of the query/mutation. It allows you to avoid fetching/editing of data not
-     * owned by the user.
-     * 
-     * @param {string} [model=undefined] : model name where get the field about user id (field parameter)
-     * @param {string} [field=undefined] : you can specify model and field where retrieve userid from mutation data,
-     *  otherwise it tries to get from where
-     * @returns {SGSMiddleware} Middleware for graphql hooks/api
-     */
-    sameUser(model, field) {
-        return (obj, data, context, info) => {
-            let id;
-            if (model && field && data[model][field]) {
-                id = data[model][field];
-            } else {
-                id = data.where ? (field ? data.where[field] : data.where.id) : (data[field] ? data[field] : data.id);
-            }
-
-            if (context.user.id == id) {
-                return Promise.resolve();
-            }
-
-            throw Error("Only admin or owner are authorized here!");
-        }
-    }
-
-    /**
-     * Middleware for sequelize-graphql-schema hooks
-     * @param {ROLES[]|ROLES_ENUM} roles 
-     * @param {SGSMiddleware} [filter=undefined] - function to filter isAllowed result
-     */
-    isAllowed(roles, filter) {
-        return async (obj, data, context, info) => {
-            if (sys.noAuth)
-                return Promise.resolve();
-
-            if (!context.user) throw Error("User not found");
-            if (!this.checkLevel(context.user, roles)) throw Error("Permission denied for user:" + context.user.id);
-
-            if (filter) {
-                return await filter(obj, data, context, info);
-            }
-
-            return Promise.resolve();
-        }
-    }
-
-    /**
-     * restric access to certain fields
-     */
-    fieldAccess(roles, inclusive, fields) {
-        return async (obj, data, context, info) => {
-            if (sys.noAuth)
-                return Promise.resolve();
-            if (!context.user) throw Error("User not found");
-            if (!this.checkLevel(context.user, roles)) throw Error("Permission denied for user:" + context.user.id);
-
-            var args = info.fieldNodes[0].selectionSet.selections.map(selection => selection.name.value);
-            if (inclusive) { //fields should contain all fields
-                var intersec = fields.filter(value => -1 !== args.indexOf(value))
-                if (intersec.length === args.length)
-                    return Promise.resolve();
-            } else { //fields contains banned fields
-                var intersec = fields.filter(value => -1 !== args.indexOf(value))
-                if (intersec.lenght === 0) return Promise.resolve();
-
-            }
-            throw new ApolloError(errors.permission.message, errors.permission.code);//throw Error("You can't see these fields");
-        }
-    }
-
-    sameUserHierachy(model, field, data, context) {
-        console.log(data)
-        console.log(model)
-        console.log(field)
-        let id;
-        if (data && data.id) {
-            id = data.id
-        } else if (model && field && data[model] && data[model][field]) {
-            id = data[model][field];
-        } else {
-            id = data.where ? (field ? data.where[field] : data.where.id) : (data[field] ? data[field] : data.id);
-        }
-
-        if (context.user.id == id) {
-            return Promise.resolve();
-        }
-
-        throw Error("Only admin or owner are authorized here!");
-    }
-
-    checkPerm(perm, userRole, info, data, context) {
-        let returnValue = false;
-        if (perm[userRole]) {
-            //fields requested
-            var args = [];
-            let s = info.fieldNodes[0].selectionSet.selections;
-            for (let k in s) {
-                let selection = s[k];
-                if (!selection.selectionSet) args.push(selection.name.value)
-            }
-            /*
+  checkPerm(perm, userRole, info, data, context) {
+    let returnValue = false;
+    if (perm[userRole]) {
+      // fields requested
+      const args = [];
+      const s = info.fieldNodes[0].selectionSet.selections;
+      for (const k in s) {
+        const selection = s[k];
+        if (!selection.selectionSet) args.push(selection.name.value);
+      }
+      /*
             hotfix: only working if requesting value in 1 layer nested queries, in a 2nd layer query we would have the 3rd requested query name as field
             //it could be used in permission to determine if a user can or can not see a whole query under another
             if (args[0] === "edges") {
@@ -183,154 +190,164 @@ class ACL {
             }*/
 
 
-            var publicInclusive = perm[userRole].public.inclusive;
-            var publicFields = perm[userRole].public.fields;
+      const publicInclusive = perm[userRole].public.inclusive;
+      const publicFields = perm[userRole].public.fields;
 
-            if (publicInclusive) { //publicFields should contain all publicFields
-                var intersec = publicFields.filter(value => -1 !== args.indexOf(value))
-                if (intersec.length === args.length)
-                    returnValue = true;
-            } else { //publicFields contains banned publicFields
-                var intersec = publicFields.filter(value => -1 !== args.indexOf(value))
-                if (intersec.length === 0)
-                    returnValue = true;
-            }
+      if (publicInclusive) { // publicFields should contain all publicFields
+        var intersec = publicFields.filter((value) => -1 !== args.indexOf(value));
+        if (intersec.length === args.length) {
+          returnValue = true;
+        }
+      } else { // publicFields contains banned publicFields
+        var intersec = publicFields.filter((value) => -1 !== args.indexOf(value));
+        if (intersec.length === 0) {
+          returnValue = true;
+        }
+      }
 
-            if (!returnValue && perm[userRole].private) {
-                var privateInclusive = perm[userRole].private.inclusive;
-                var privateFields = perm[userRole].private.fields;
-                var customCheck = perm[userRole].private.customCheck ? perm[userRole].private.customCheck() : true;
-                var isSameUser = perm[userRole].private.isSameUser ? this.sameUserHierachy(perm[userRole].private.isSameUser.model, perm[userRole].private.isSameUser.field, data, context) : false;
-                if (customCheck && isSameUser) {
-                    if (privateInclusive) { //privateFields should contain all privateFields
-                        let intersec = privateFields.filter(value => -1 !== args.indexOf(value))
-                        let tmp = publicFields.concat(privateFields);
-                        console.log(args, privateFields, intersec, tmp)
-                        if (tmp.length >= args.length && intersec != 0)
-                            returnValue = true;
-                    } else { //privateFields contains banned privateFields
-                        var intersec = privateFields.filter(value => -1 !== args.indexOf(value))
-                        if (intersec.length === 0)
-                            returnValue = true;
-                    }
-                }
+      if (!returnValue && perm[userRole].private) {
+        const privateInclusive = perm[userRole].private.inclusive;
+        const privateFields = perm[userRole].private.fields;
+        const customCheck = perm[userRole].private.customCheck ? perm[userRole].private.customCheck() : true;
+        const isSameUser = perm[userRole].private.isSameUser ? this.sameUserHierachy(perm[userRole].private.isSameUser.model, perm[userRole].private.isSameUser.field, data, context) : false;
+        if (customCheck && isSameUser) {
+          if (privateInclusive) { // privateFields should contain all privateFields
+            const intersec = privateFields.filter((value) => -1 !== args.indexOf(value));
+            const tmp = publicFields.concat(privateFields);
+            console.log(args, privateFields, intersec, tmp);
+            if (tmp.length >= args.length && intersec != 0) {
+              returnValue = true;
             }
+          } else { // privateFields contains banned privateFields
+            var intersec = privateFields.filter((value) => -1 !== args.indexOf(value));
+            if (intersec.length === 0) {
+              returnValue = true;
+            }
+          }
+        }
+      }
+    } else {
+      if (userRole > this.min) {
+        returnValue = this.checkPerm(perm, userRole - 1, info, data, context);
+      }
+    }
+
+    return returnValue;
+  }
+
+  /**
+   * @typedef PermObjPublic
+   * @property {Array} fields
+   * @property {boolean} inclusive
+   */
+
+  /**
+   * @typedef PermObjPrivate
+   * @property {Array} fields
+   * @property {boolean} inclusive
+   * @property {Function} customCheck
+   * @property {Object} isSameUser
+   */
+
+  /**
+   * @typedef PermObj
+   * @property {PermObjPublic} public
+   * @property {PermObjPrivate} private
+   */
+
+  /**
+   * Handle the hierarchy for this model using permObj to define permissions, example below.
+   *
+   * @param {PermObj} permObj
+   * @example
+   *  {
+   *      [ACL.roles.ROLE_USER]: {
+   *           public: {
+   *              inclusive: true,
+   *              fields: ["username"],
+   *           },
+   *           private: {
+   *              inclusive: true,
+   *              fields: ["username"],
+   *              customCheck: hasBananaPower(),
+   *              isSameUser: {model: "", field: ""},
+   *           },
+   *       },
+   *       [ACL.roles.ROLE_GAMEMASTER]: {
+   *           public: {
+   *              inclusive: true,
+   *              fields: ["username"],
+   *           },
+   *           private: {
+   *              inclusive: true,
+   *              fields: ["username"],
+   *              customCheck: hasBananaPower(),
+   *              isSameUser: {model: "", field: ""},
+   *           },
+   *       },
+   *       [ACL.roles.ROLE_PROTECTOR]: {
+   *           public: {
+   *              inclusive: true,
+   *              fields: ["username"],
+   *           },
+   *           private: {
+   *              inclusive: true,
+   *              fields: ["username"],
+   *              customCheck: hasBananaPower(),
+   *              isSameUser: {model: "", field: ""},
+   *           },
+   *       },
+   *       [ACL.roles.ROLE_SUPERADMIN]: {
+   *           public: {
+   *              inclusive: true,
+   *              fields: ["username"],
+   *           },
+   *       }
+   *   }
+   */
+  handleHierarchy(permObj) {
+    return async (obj, data, context, info) => {
+      if (sys.noAuth) {
+        return Promise.resolve();
+      }
+      if (context?.user) {
+        const userRole = this.getLevel(context.user);
+        if (this.checkPerm(permObj, userRole, info, data, context)) return Promise.resolve();
+      }
+
+      throw new ApolloError(errors.permission.message, errors.permission.code);// Error("You can't see this");
+    };
+  }
+
+  ownDataFilter(models, relModel, userKey, relKey) {
+    return async function(obj, data, context, info) {
+      let id = data.where ? data.where.id : data.id;
+
+      if (sys.noAuth) {
+        return Promise.resolve();
+      }
+
+      if (!id) {
+        if (obj && obj.constructor.name == relModel && obj[relKey]) {
+          id = obj[relKey];
         } else {
-            if (userRole > this.min)
-                returnValue = this.checkPerm(perm, userRole - 1, info, data, context)
+          return Promise.reject('You cannot see all data of this query, use a specific id!');
         }
+      }
 
-        return returnValue;
-    }
+      const res = await models[relModel].findOne({
+        where: {
+          [userKey]: context.user.id,
+          [relKey]: id,
+        },
+      });
 
-    /**
-     * @typedef PermObjPublic
-     * @property {Array} fields 
-     * @property {Boolean} inclusive 
-     */
+      if (!res) {
+        return Promise.reject('This element is not for you!');
+      }
 
-    /**
-     * @typedef PermObjPrivate
-     * @property {Array} fields 
-     * @property {Boolean} inclusive 
-     * @property {Function} customCheck
-     * @property {Object} isSameUser
-     */
-
-    /**
-     * @typedef PermObj
-     * @property {PermObjPublic} public 
-     * @property {PermObjPrivate} private 
-     */
-
-    /**
-     * Handle the hierarchy for this model using permObj to define permissions, example below.
-     * @param {PermObj} permObj 
-     * @example
-     *  {
-     *      [ACL.roles.ROLE_USER]: {
-     *           public: {
-     *              inclusive: true,
-     *              fields: ["username"],
-     *           },
-     *           private: {
-     *              inclusive: true,
-     *              fields: ["username"],
-     *              customCheck: hasBananaPower(),
-     *              isSameUser: {model: "", field: ""},
-     *           },
-     *       },
-     *       [ACL.roles.ROLE_GAMEMASTER]: {
-     *           public: {
-     *              inclusive: true,
-     *              fields: ["username"],
-     *           },
-     *           private: {
-     *              inclusive: true,
-     *              fields: ["username"],
-     *              customCheck: hasBananaPower(),
-     *              isSameUser: {model: "", field: ""},
-     *           },
-     *       },
-     *       [ACL.roles.ROLE_PROTECTOR]: {
-     *           public: {
-     *              inclusive: true,
-     *              fields: ["username"],
-     *           },
-     *           private: {
-     *              inclusive: true,
-     *              fields: ["username"],
-     *              customCheck: hasBananaPower(),
-     *              isSameUser: {model: "", field: ""},
-     *           },
-     *       },
-     *       [ACL.roles.ROLE_SUPERADMIN]: {
-     *           public: {
-     *              inclusive: true,
-     *              fields: ["username"],
-     *           },
-     *       }
-     *   }
-     */
-    handleHierarchy(permObj) {
-        return async (obj, data, context, info) => {
-            if (sys.noAuth)
-                return Promise.resolve();
-            if (context?.user) {
-                var userRole = this.getLevel(context.user)
-                if (this.checkPerm(permObj, userRole, info, data, context)) return Promise.resolve();
-            }
-
-            throw new ApolloError(errors.permission.message, errors.permission.code);//Error("You can't see this");
-        }
-    }
-
-    ownDataFilter(models, relModel, userKey, relKey) {
-        return async function (obj, data, context, info) {
-            let id = data.where ? data.where.id : data.id;
-
-            if (sys.noAuth)
-                return Promise.resolve();
-
-            if (!id) {
-                if (obj && obj.constructor.name == relModel && obj[relKey])
-                    id = obj[relKey];
-                else
-                    return Promise.reject("You cannot see all data of this query, use a specific id!");
-            }
-
-            let res = await models[relModel].findOne({
-                where: {
-                    [userKey]: context.user.id,
-                    [relKey]: id
-                }
-            });
-
-            if (!res)
-                return Promise.reject("This element is not for you!");
-
-            return Promise.resolve();
-        }
-    }
+      return Promise.resolve();
+    };
+  }
 }
 export default new ACL();

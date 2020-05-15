@@ -1,8 +1,8 @@
 import nodemailer from 'nodemailer';
-import {config} from '@config';
 import ejs from 'ejs';
+import config from '@/conf/';
 
-export var mailer = null;
+export let mailer = null;
 
 export default class Mailer {
   constructor(config) {
@@ -30,7 +30,7 @@ export default class Mailer {
       activationPage = 'activation',
   ) {
     try {
-      const url = `${conf.clientUrl}/${activationPage}/${_id}/${_activationToken}`;
+      const url = `${config.clientUrl}/${activationPage}/${_id}/${_activationToken}`;
 
       const mailOptions = {
         subject: 'Confirmation Email',
@@ -54,7 +54,7 @@ export default class Mailer {
 
   sendRecovery(_recoveryToken, _email, _recoveryPage = 'pass_recover') {
     try {
-      const url = `${conf.clientUrl}/${_recoveryPage}/${_email}/${_recoveryToken}`;
+      const url = `${config.clientUrl}/${_recoveryPage}/${_email}/${_recoveryToken}`;
 
       const mailOptions = {
         subject: 'Recovery password',
