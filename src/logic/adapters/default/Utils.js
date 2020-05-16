@@ -1,7 +1,4 @@
-import {
-  CustomErrors,
-} from '@this/src/system/CustomErrors';
-
+import {CustomErrors} from '@/logic/CustomErrors';
 
 /**
  * @param _appModels

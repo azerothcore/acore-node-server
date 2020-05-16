@@ -3,7 +3,7 @@ import {models} from '@/database/index.js';
 import {app} from './express.js';
 import {seqHelper} from './sequelize.js';
 import {GraphQLSchema} from 'graphql';
-import {ApolloServer} from 'apollo-server-express';
+import {ApolloServer, mergeSchemas} from 'apollo-server-express';
 import graphcraft from 'graphcraft';
 import Mailer from '@/service/utils/mailer/';
 import {verifyToken} from '@/service/helpers.js';
@@ -12,16 +12,26 @@ import realmsMgr from '@/logic/realmsMgr';
 /**
  * start sequelize, apolloserver (graphql), express
  */
-export function boot() {
-  realmsMgr.load(models);
+export async function boot() {
+  await realmsMgr.load(models);
 
   seqHelper();
 
   const {generateSchema} = graphcraft();
 
+  const schemas = (m) => {
+    const schemas = [realmsMgr.mergedSchema];
+    const autogenSchema = new GraphQLSchema(m);
+    schemas.push(autogenSchema);
+    const mergedSchema = mergeSchemas({
+      schemas,
+    });
+    return mergedSchema;
+  };
+
   generateSchema(models).then((graphqlmodels) => {
     const server = new ApolloServer({
-      schema: new GraphQLSchema(graphqlmodels),
+      schema: schemas(graphqlmodels),
       context: async ({req}) => {
         const decoded = verifyToken(req, conf.secret);
         if (decoded) {
@@ -51,7 +61,7 @@ export function boot() {
       },
       formatError: (error) => {
         // error.message ? console.log("\x1b[31mERROR: " + error.message + "\x1b[0m") : console.log(error)
-        console.log(error);
+        // console.log(error);
         // delete error.extensions.exception;
         return error;
       },

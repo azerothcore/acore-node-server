@@ -1,44 +1,40 @@
 import _confDef from './dist/conf.js';
-import _conf from './conf.js';
-
 import _dbConfDef from './dist/database.js';
-import _dbConf from './database.js';
 
-// avoid circular error
-delete _confDef.default;
-delete _conf.default;
-
-delete _dbConfDef.default;
-delete _dbConf.default;
+import {object} from '@azerothcore/js-common';
 
 /**
- * @param item
+ * @param confPath
+ * @param defConf
  */
-export function isObject(item) {
-  return item && typeof item === 'object' && !Array.isArray(item);
-}
+function getUserConf(confPath, defConf) {
+  /** @type {_confDef} */
+  let mConf;
+  try {
+    // eslint-disable-next-line
+    // @ts-ignore
+    // eslint-disable-next-line
+    const _conf = require(confPath);
 
-/**
- * @param target
- * @param source
- */
-function mergeDeep(target, source) {
-  const output = Object.assign({}, target);
-  if (isObject(target) && isObject(source)) {
-    Object.keys(source).forEach((key) => {
-      if (isObject(source[key])) {
-        if (!(key in target)) {
-          Object.assign(output, {[key]: source[key]});
-        } else {
-          output[key] = mergeDeep(target[key], source[key]);
-        }
-      } else {
-        Object.assign(output, {[key]: source[key]});
-      }
-    });
+    let toMerge;
+    if (_conf.default) {
+      toMerge = _conf.default;
+    } else {
+      toMerge = _conf;
+    }
+
+    delete _confDef.default;
+
+    mConf = object.mergeDeep(defConf, toMerge);
+  } catch (ex) {
+    mConf = _confDef;
   }
-  return output;
+
+  return mConf;
 }
 
-export const conf = mergeDeep(_confDef, _conf);
-export const dbConf = mergeDeep(_dbConfDef, _dbConf);
+export const conf = getUserConf('./conf.js', _confDef);
+
+export const dbConf = getUserConf('./database.js', _dbConfDef);
+
+

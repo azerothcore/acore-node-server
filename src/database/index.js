@@ -14,10 +14,14 @@ const sequelize = new Sequelize(db.database, db.username, db.password, {
   dialect: db.dialect,
 });
 
-const models = seqAutoImport(sequelize, path.join(__dirname, './entities/app'), {
-  recursive: true,
-  associate: true,
-});
+const models = seqAutoImport(
+    sequelize,
+    path.join(__dirname, './entities/app'),
+    {
+      recursive: true,
+      associate: true,
+    },
+);
 
 models.sequelize = sequelize;
 models.Sequelize = Sequelize;

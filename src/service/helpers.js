@@ -273,6 +273,21 @@ export function sameUser(model, field) {
 }
 
 /**
+ * @param email
+ * @param domains
+ */
+export function validateEmail(email, domains) {
+  const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+  if (emailPattern.test(email)) {
+    if (!domains) return true;
+    for (const i in domains) {
+      if (email.endsWith(domains[i])) return true;
+    }
+  }
+  return false;
+}
+
+/**
  * This function create a 8 characters random string
  */
 export function random() {

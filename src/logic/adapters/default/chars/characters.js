@@ -1,22 +1,21 @@
 import Sequelize from 'sequelize';
-import ACL from '@this/src/system/ACL';
-import {applyMiddlewares} from '@hw-core/node-platform/src/libs/apiHelpers';
+import ACL from '@/logic/ACL';
+import {applyMiddlewares} from '@/service/helpers';
 
 const RECOVER_CHAR_ACCOUNT = 5;
 
-// const Op = Sequelize.Op;
+const Op = Sequelize.Op;
 
 /**
  * @instance
  * @param dbId
  * @param dbVal
  * @param {Sequelize} sequelize
- * @param {Object.<string, Sequelize.Model>} models
+ * @param {any} models
  * @param {Object.<string, Sequelize.Model>} appModels
  */
-function dbAdapter(dbId, dbVal, sequelize, models) {
-  const characters = models[dbId].characters;
-
+function dbAdapter(dbId, dbVal, sequelize, models, appModels) {
+  const characters = models[dbId]['characters'];
   const accountDbId = dbVal['accountDbId'];
 
   characters.associate = () => {
@@ -140,7 +139,7 @@ function dbAdapter(dbId, dbVal, sequelize, models) {
               name: Sequelize.where(
                   Sequelize.fn('lower', Sequelize.col('name')),
                   {
-                    $like: '%' + data.countPlayerInput.searchFor + '%',
+                    [Op.like]: '%' + data.countPlayerInput.searchFor + '%',
                   },
               ),
             },
@@ -162,7 +161,7 @@ function dbAdapter(dbId, dbVal, sequelize, models) {
               name: Sequelize.where(
                   Sequelize.fn('lower', Sequelize.col('name')),
                   {
-                    $like: data.getPlayersInput.searchFor,
+                    [Op.like]: data.getPlayersInput.searchFor,
                   },
               ),
             },

@@ -1,5 +1,5 @@
 import * as account from './account';
-import * as accountAccess from './accountAccess';
+import * as accountAccess from './account_access';
 
 /**
  * @param model
@@ -18,7 +18,7 @@ function schemaAdapter(model) {
  */
 function dbAdapter(dbId, dbVal, sequelize, models, appModels) {
   account.dbAdapter(dbId, dbVal, sequelize, models, appModels);
-  accountAccess.dbAdapter(dbId, dbVal, sequelize, models, appModels);
+  accountAccess.dbAdapter(dbId, dbVal, sequelize, models);
 }
 
 export {

@@ -1,18 +1,16 @@
 import Sequelize from 'sequelize';
-import '@this/src/defs/jsdoc';
-// import {  applyMiddlewares} from '@hw-core/node-platform/src/libs/apiHelpers';
-import ACL from '@this/src/system/ACL';
+// import {applyMiddlewares} from '@hw-core/node-platform/src/libs/apiHelpers';
+import ACL from '@/logic/ACL';
 
 /**
  * @instance
  * @param dbId
  * @param dbVal
  * @param {Sequelize} sequelize
- * @param {Object.<string, Sequelize.Model>} models
- * @param {Object.<string, Sequelize.Model>} appModels
+ * @param {any} models
  */
 function dbAdapter(dbId, dbVal, sequelize, models /* , appModels*/) {
-  const accountAccess = models[dbId].accountAccess;
+  const accountAccess = models[dbId].account_access;
   accountAccess.graphql = {
     before: {
       create: ACL.isAllowed([ACL.roles.ROLE_SUPERADMIN]),
@@ -20,16 +18,16 @@ function dbAdapter(dbId, dbVal, sequelize, models /* , appModels*/) {
       update: ACL.isAllowed([ACL.roles.ROLE_SUPERADMIN]),
       fetch: ACL.isAllowed(
           ACL.roles.ROLE_USER,
-          ACL.sameUser('accountAccess', 'id'),
+          ACL.sameUser('account_access', 'id'),
       ),
     },
   };
 
-  models[dbId].account.hasMany(models[dbId].accountAccess, {
+  models[dbId].account.hasMany(models[dbId].account_access, {
     foreignKey: 'id',
   });
 
-  models[dbId].accountAccess.belongsTo(models[dbId].account, {
+  models[dbId].account_access.belongsTo(models[dbId].account, {
     foreignKey: 'id',
   });
 }

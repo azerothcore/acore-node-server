@@ -11,7 +11,7 @@
     "target": "es5",
     "outDir": "./dist",
     "typeRoots": [
-      "./node_modules/@types"
+      "./node_modules/@types",
     ],
     "baseUrl": "./",
     "paths": {
@@ -24,6 +24,6 @@
     }
   },
   "include": [
-    "./src/*",
-  ]
+    "./src/**/*"
+  ],
 }

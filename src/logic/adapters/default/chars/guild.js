@@ -2,12 +2,12 @@
  * @instance
  * @param dbId
  * @param dbVal
- * @param {Sequelize} sequelize
- * @param {Object.<string, Sequelize.Model>} models
- * @param {Object.<string, Sequelize.Model>} appModels
+ * @param {import("sequelize")} sequelize
+ * @param {any} models
+ * @param {Object.<string, import("sequelize").Model>} appModels
  */
-function dbAdapter(dbId, dbVal, sequelize, models) {
-  const guild = models[dbId].guild;
+function dbAdapter(dbId, dbVal, sequelize, models, appModels) {
+  const guild = models[dbId]['guild'];
 
   models[dbId].guild_member.removeAttribute('id');
 
@@ -44,7 +44,7 @@ function dbAdapter(dbId, dbVal, sequelize, models) {
 /**
  * @param model
  */
-function schemaAdapter(/* model*/) {
+function schemaAdapter(model) {
   return null;
 }
 

@@ -40,12 +40,13 @@
     "sequelize": "^5.21.1",
     "sequelize-auto-import": "^1.1.1",
     "sequelize-graphql-schema": "^0.1.71",
+    "sha1": "^1.1.1",
     "sofa-api": "^0.6.0",
     "stream-to-array": "^2.3.0",
     "ts-node": "^8.10.1"
   },
   "scripts": {
-    "start": "nodemon --exec npx ts-node -r dotenv/config src/run.ts",
+    "start": "nodemon --ext ts,js --exec npx ts-node -r dotenv/config src/run.ts",
     "start:docker": "docker-compose -f docker-compose.yml -f docker/docker-compose.override.yml up -d && docker-compose exec node-server bash || docker-compose stop",
     "start:docker:prod": "docker-compose -f docker-compose.yml -f docker/docker-compose.override.yml -f docker/docker-compose.prod.yml up -d && docker-compose exec node-server bash || docker-compose stop",
     "lint": "eslint .",

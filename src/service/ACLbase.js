@@ -1,8 +1,8 @@
 /**
  * @typedef Db
- * @property {Sequelize.Model[]} models
+ * @property {import("sequelize").Model[]} models - models
  * @instance
- * @property {Sequelize} sequelize
+ * @property {import("sequelize")} sequelize - sequelize
  */
 
 /**
@@ -25,7 +25,7 @@
  * @enum {ROLES_ENUM}
  */
 import {ApolloError} from 'apollo-server';
-import errors from '@database/errors';
+import errors from './errors';
 
 export const ROLES = {
   ROLE_USER: 0,
@@ -38,7 +38,7 @@ const sys = {
 };
 
 class ACL {
-  constructor(field = 'role', roles = ROLES) {
+  constructor(field = 'role', roles) {
     this.field = field;
     this.roles = roles;
     const arr = Object.values(roles);
@@ -108,7 +108,7 @@ class ACL {
   /**
    * Middleware for sequelize-graphql-schema hooks
    *
-   * @param {ROLES[]|ROLES_ENUM} roles
+   * @param {number[]|number} roles
    * @param {SGSMiddleware} [filter=undefined] - function to filter isAllowed result
    */
   isAllowed(roles, filter) {
@@ -133,6 +133,12 @@ class ACL {
   /**
    * restric access to certain fields
    *
+   * @param roles
+   * @param inclusive
+   * @param fields
+   * @param roles
+   * @param inclusive
+   * @param fields
    * @param roles
    * @param inclusive
    * @param fields
@@ -161,7 +167,10 @@ class ACL {
         const intersec = fields.filter((value) => -1 !== args.indexOf(value));
         if (intersec.lenght === 0) return Promise.resolve();
       }
-      throw new ApolloError(errors.permission.message, errors.permission.code); // throw Error("You can't see these fields");
+      throw new ApolloError(
+          errors.permission.message,
+          `${errors.permission.code}`,
+      ); // throw Error("You can't see these fields");
     };
   }
 
@@ -197,7 +206,10 @@ class ACL {
       // fields requested
       const args = [];
       const s = info.fieldNodes[0].selectionSet.selections;
-      for (const selection of s) {
+      for (const k in s) {
+        if (!Object.prototype.hasOwnProperty.call(s, k)) continue;
+
+        const selection = s[k];
         if (!selection.selectionSet) args.push(selection.name.value);
       }
       /*
@@ -209,20 +221,16 @@ class ACL {
 
       const publicInclusive = perm[userRole].public.inclusive;
       const publicFields = perm[userRole].public.fields;
-
+      let intersec;
       if (publicInclusive) {
         // publicFields should contain all publicFields
-        const intersec = publicFields.filter(
-            (value) => -1 !== args.indexOf(value),
-        );
+        intersec = publicFields.filter((value) => -1 !== args.indexOf(value));
         if (intersec.length === args.length) {
           returnValue = true;
         }
       } else {
         // publicFields contains banned publicFields
-        const intersec = publicFields.filter(
-            (value) => -1 !== args.indexOf(value),
-        );
+        intersec = publicFields.filter((value) => -1 !== args.indexOf(value));
         if (intersec.length === 0) {
           returnValue = true;
         }
@@ -275,28 +283,28 @@ class ACL {
 
   /**
    * @typedef PermObjPublic
-   * @property {Array} fields
-   * @property {boolean} inclusive
+   * @property {Array} fields - fields
+   * @property {boolean} inclusive - inclusive
    */
 
   /**
    * @typedef PermObjPrivate
-   * @property {Array} fields
-   * @property {boolean} inclusive
-   * @property {Function} customCheck
-   * @property {Object} isSameUser
+   * @property {Array} fields - fields
+   * @property {boolean} inclusive - inclusive
+   * @property {Function} [customCheck] - Function
+   * @property {Object} isSameUser - isSameUser
    */
 
   /**
    * @typedef PermObj
-   * @property {PermObjPublic} public
-   * @property {PermObjPrivate} private
+   * @property {PermObjPublic} public - public
+   * @property {PermObjPrivate} private - private
    */
 
   /**
    * Handle the hierarchy for this model using permObj to define permissions, example below.
    *
-   * @param {PermObj} permObj
+   * @param {Object.<number, PermObj>} permObj
    * @example
    *  {
    *      [ACL.roles.ROLE_USER]: {
@@ -355,12 +363,12 @@ class ACL {
         }
       }
 
-      throw new ApolloError(errors.permission.message, errors.permission.code); // Error("You can't see this");
+      throw new ApolloError(errors.permission.message, `${errors.permission.code}`); // Error("You can't see this");
     };
   }
 
   ownDataFilter(models, relModel, userKey, relKey) {
-    return async function(obj, data, context, info) {
+    return async function(obj, data, context /* , info*/) {
       let id = data.where ? data.where.id : data.id;
 
       if (sys.noAuth) {
@@ -371,11 +379,9 @@ class ACL {
         if (obj && obj.constructor.name == relModel && obj[relKey]) {
           id = obj[relKey];
         } else {
-          return Promise.reject(
-              new Error(
-                  'You cannot see all data of this query, use a specific id!',
-              ),
-          );
+          return Promise.reject(new Error(
+              'You cannot see all data of this query, use a specific id!',
+          ));
         }
       }
 
@@ -394,4 +400,5 @@ class ACL {
     };
   }
 }
-export default new ACL();
+
+export default ACL;

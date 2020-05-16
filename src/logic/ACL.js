@@ -1,4 +1,4 @@
-import ACL from '@hw-core/node-platform/src/libs/ACL';
+import ACL from '@/service/ACLbase';
 // import * as sys from '@hw-core/node-platform/src/libs/sysUtil';
 
 export const ROLES = {
@@ -12,7 +12,6 @@ export const ROLES = {
 
 /**
  * Access Control Layer for Maelstrom APIs (extending hw-core ACL)
- * @
  */
 class MsACL extends ACL {
   constructor() {

@@ -1,23 +1,20 @@
 import Sequelize from 'sequelize';
-import Mailer from '@hw-core/node-platform/src/libs/Mailer';
-import {
-  validateEmail,
-  applyMiddlewares,
-} from '@hw-core/node-platform/src/libs/apiHelpers';
-import bcrypt from 'bcrypt';
+import Mailer from '@/service/utils/mailer';
+import {applyMiddlewares, validateEmail} from '@/service/helpers';
+import bcrypt from 'bcryptjs';
 import sha1 from 'sha1';
 import jsonwebtoken from 'jsonwebtoken';
-import {conf} from '@this/conf';
+import {conf} from '@/conf';
 import {
   syncWithGame,
   isPasswordValid,
   isUsernameValid,
   isEmailValid,
   normalizeCredentials,
-} from '@this/src/system/adapters/ms/Utils';
-import {server} from '@this/src/server/server';
-import ACL from '@this/src/system/ACL';
-import {CustomErrors} from '@this/src/system/CustomErrors';
+} from '../Utils';
+import {app} from '@/service/boot/express';
+import ACL from '@/logic/ACL';
+import {CustomErrors} from '@/logic/CustomErrors';
 
 /**
  * @instance
@@ -25,10 +22,10 @@ import {CustomErrors} from '@this/src/system/CustomErrors';
  * @param dbVal
  * @param {Sequelize} sequelize
  * @param {Object.<string, Sequelize.Model>} models
- * @param {Object.<string, Sequelize.Model>} appModels
+ * @param {any} appModels heck fiex
  */
 function dbAdapter(dbId, dbVal, sequelize, models, appModels) {
-  const account = models[dbId].account;
+  const account = models[dbId]['account'];
 
   account.graphql = {
     attributes: {
@@ -134,13 +131,13 @@ function dbAdapter(dbId, dbVal, sequelize, models, appModels) {
             throw Error(CustomErrors.invalidEmail);
           }
 
-          const username = await models[dbId].account.findOne({
+          const username = await models[dbId]['account'].findOne({
             where: {
               username: signup.username,
             },
           });
           if (username) throw Error(CustomErrors.invalidUsername);
-          const mail = await models[dbId].account.findOne({
+          const mail = await models[dbId]['account'].findOne({
             where: {
               email: signup.email,
             },
@@ -207,7 +204,7 @@ function dbAdapter(dbId, dbVal, sequelize, models, appModels) {
           login.username = normalizeCredentials(login.username);
           login.password = normalizeCredentials(login.password);
 
-          const res = await models[dbId].account.findOne({
+          const res = await models[dbId]['account'].findOne({
             attributes: ['id', 'email'],
             where: {
               username: login.username,
@@ -216,7 +213,7 @@ function dbAdapter(dbId, dbVal, sequelize, models, appModels) {
             include: [
               {
                 attributes: ['gmlevel'],
-                model: models[dbId].account_access,
+                model: models[dbId]['account_access'],
                 where: {
                   [Sequelize.Op.or]: [
                     {
@@ -240,7 +237,7 @@ function dbAdapter(dbId, dbVal, sequelize, models, appModels) {
             if (isEmail) {
               throw Error(CustomErrors.invalidLoginIsEmail);
             } else {
-              const checkUsername = await models[dbId].account.findOne({
+              const checkUsername = await models[dbId]['account'].findOne({
                 attributes: ['id'],
                 where: {
                   username: login.username,
@@ -248,7 +245,7 @@ function dbAdapter(dbId, dbVal, sequelize, models, appModels) {
                 include: [
                   {
                     attributes: ['gmlevel'],
-                    model: models[dbId].account_access,
+                    model: models[dbId]['account_access'],
                     where: {
                       [Sequelize.Op.or]: [
                         {
@@ -494,126 +491,120 @@ function dbAdapter(dbId, dbVal, sequelize, models, appModels) {
 
   /* RELATION BETWEEN APP DB AND GAME DB (not working) error -> https://pastebin.com/hWS2LPqQ
 
-        models[dbId].account.hasOne(appModels.User, {
+        models[dbId]['account'].hasOne(appModels.User, {
             foreignKey: 'id'
         })
 
-        appModels.User.belongsTo(models[dbId].account, {
+        appModels.User.belongsTo(models[dbId]['account'], {
             foreignKey: 'id'
         })
 
         */
 
-  server.hwApolloServer.expressApp.get(
-      '/pass_recover/:email/:token',
-      async (req, res) => {
-      // RECOVER PASSWORD NEW PASSWORD GENERATION
-        let user;
-        let newPass;
-        try {
-          user = await account.findOne({
-            where: {
-              email: req.params.email,
-            },
-            attributes: ['id', 'username', 'email'],
-          });
+  app.get('/pass_recover/:email/:token', async (req, res) => {
+    // RECOVER PASSWORD NEW PASSWORD GENERATION
+    let user;
+    let newPass;
+    try {
+      user = await account.findOne({
+        where: {
+          email: req.params.email,
+        },
+        attributes: ['id', 'username', 'email'],
+      });
 
-          const recovery = await appModels.User.findOne({
+      const recovery = await appModels.User.findOne({
+        where: {
+          id: user.id,
+        },
+        attributes: ['recoveryToken'],
+      });
+
+      if (!user) return res.send('Error 700');
+      if (!recovery) return res.send('Error 701');
+      if (req.params.token != recovery.recoveryToken) {
+        return res.send('Error 702');
+      }
+      newPass = Math.random()
+          .toString(36)
+          .replace(/[^a-z]+/g, '')
+          .substr(0, 9);
+
+      newPass = normalizeCredentials(newPass);
+      user.username = normalizeCredentials(user.username);
+
+      const pass = await sha1(user.username + ':' + newPass);
+
+      await account.update(
+          {
+            sha_pass_hash: pass,
+            v: 0,
+            s: 0,
+          },
+          {
             where: {
               id: user.id,
             },
-            attributes: ['recoveryToken'],
-          });
+          },
+      );
 
-          if (!user) return res.send('Error 700');
-          if (!recovery) return res.send('Error 701');
-          if (req.params.token != recovery.recoveryToken) {
-            return res.send('Error 702');
-          }
-          newPass = Math.random()
-              .toString(36)
-              .replace(/[^a-z]+/g, '')
-              .substr(0, 9);
+      await appModels.User.update(
+          {
+            recoveryToken: '',
+          },
+          {
+            where: {
+              id: user.id,
+            },
+          },
+      );
+    } catch (error) {
+      console.log(error);
+    }
+    const email = new Mailer(conf.mailer);
+    email.sendPassword(newPass, user.email);
+    return res.send('A new temporary password has been sent to your email');
+  });
 
-          newPass = normalizeCredentials(newPass);
-          user.username = normalizeCredentials(user.username);
-
-          const pass = await sha1(user.username + ':' + newPass);
-
-          await account.update(
-              {
-                sha_pass_hash: pass,
-                v: 0,
-                s: 0,
-              },
-              {
-                where: {
-                  id: user.id,
-                },
-              },
-          );
-
-          await appModels.User.update(
-              {
-                recoveryToken: '',
-              },
-              {
-                where: {
-                  id: user.id,
-                },
-              },
-          );
-        } catch (error) {
-          console.log(error);
-        }
-        const email = new Mailer(conf.mailer);
-        email.sendPassword(newPass, user.email);
-        return res.send('A new temporary password has been sent to your email');
-      },
-  );
-
-  server.hwApolloServer.expressApp.get(
-      '/activation/:id/:token',
-      async (req, res) => {
-        try {
-          const user = await appModels.User.findOne({
+  app.get('/activation/:id/:token', async (req, res) => {
+    try {
+      const user = await appModels.User.findOne({
+        where: {
+          id: req.params.id,
+        },
+        attributes: ['activationToken'],
+      });
+      if (!user) return res.send('Error 703');
+      if (!user.activationToken) return res.send('Already actived!');
+      if (req.params.token != user.activationToken) {
+        return res.send('Error 704');
+      }
+      await appModels.User.update(
+          {
+            activationToken: '',
+          },
+          {
             where: {
               id: req.params.id,
             },
-            attributes: ['activationToken'],
-          });
-          if (!user) return res.send('Error 703');
-          if (!user.activationToken) return res.send('Already actived!');
-          if (req.params.token != user.activationToken) {
-            return res.send('Error 704');
-          }
-          await appModels.User.update(
-              {
-                activationToken: '',
-              },
-              {
-                where: {
-                  id: req.params.id,
-                },
-              },
-          );
-          // activate wow account too
-          await account.update(
-              {
-                locked: 0,
-              },
-              {
-                where: {
-                  id: req.params.id,
-                },
-              },
-          );
-        } catch (error) {
-          console.log(error);
-        }
-        return res.send('User activated successfully');
-      },
-  );
+          },
+      );
+      // activate wow account too
+      await account.update(
+          {
+            locked: 0,
+          },
+          {
+            where: {
+              id: req.params.id,
+            },
+          },
+      );
+    } catch (error) {
+      console.log(error);
+    }
+    return res.send('User activated successfully');
+  });
 }
 
 /**
