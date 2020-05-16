@@ -1,12 +1,12 @@
 import nodemailer from 'nodemailer';
 import ejs from 'ejs';
-import config from '@/conf/';
+import {conf} from '@/conf/';
 
 export let mailer = null;
 
 export default class Mailer {
-  constructor(config) {
-    this.transporter = nodemailer.createTransport(config);
+  constructor(conf) {
+    this.transporter = nodemailer.createTransport(conf);
 
     Object.freeze(this.transporter);
   }
@@ -18,8 +18,8 @@ export default class Mailer {
     return mailer;
   }
 
-  static initialize(config) {
-    mailer = new Mailer(config);
+  static initialize(conf) {
+    mailer = new Mailer(conf);
   }
 
   // change name of function sendMail in sendConfirmation
@@ -30,7 +30,7 @@ export default class Mailer {
       activationPage = 'activation',
   ) {
     try {
-      const url = `${config.clientUrl}/${activationPage}/${_id}/${_activationToken}`;
+      const url = `${conf.clientUrl}/${activationPage}/${_id}/${_activationToken}`;
 
       const mailOptions = {
         subject: 'Confirmation Email',
@@ -54,7 +54,7 @@ export default class Mailer {
 
   sendRecovery(_recoveryToken, _email, _recoveryPage = 'pass_recover') {
     try {
-      const url = `${config.clientUrl}/${_recoveryPage}/${_email}/${_recoveryToken}`;
+      const url = `${conf.clientUrl}/${_recoveryPage}/${_email}/${_recoveryToken}`;
 
       const mailOptions = {
         subject: 'Recovery password',

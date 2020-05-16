@@ -1,9 +1,4 @@
-/**
- * @instance
- * @param {Sequelize} sequelize
- * @param {Sequelize} DataTypes
- */
-export default function(sequelize, DataTypes) {
+module.exports = function(sequelize, DataTypes) {
   const User = sequelize.define('User', {
     id: {
       type: DataTypes.INTEGER,
@@ -21,4 +16,4 @@ export default function(sequelize, DataTypes) {
   });
 
   return User;
-}
+};

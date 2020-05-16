@@ -17,7 +17,10 @@
     "apollo-server": "^2.9.13",
     "apollo-server-fastify": "^2.9.8",
     "base64-to-image": "^1.0.2",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
     "dataloader": "^2.0.0",
+    "ejs": "^3.1.2",
     "fastify": "^2.10.0",
     "fastify-cors": "^2.2.0",
     "fastify-helmet": "^3.0.2",
@@ -27,11 +30,16 @@
     "graphql": "^14.5.8",
     "graphql-transform-federation": "^2.0.1",
     "graphql-type-json": "^0.3.1",
+    "jsonwebtoken": "^8.5.1",
     "merge-graphql-schemas": "^1.7.6",
+    "mysql2": "^2.1.0",
     "node-fetch": "^2.6.0",
+    "nodemailer": "^6.4.6",
     "nodemon": "^1.19.4",
     "noderouter": "https://github.com/azerothcore/noderouter.git",
     "sequelize": "^5.21.1",
+    "sequelize-auto-import": "^1.1.1",
+    "sequelize-graphql-schema": "^0.1.71",
     "sofa-api": "^0.6.0",
     "stream-to-array": "^2.3.0",
     "ts-node": "^8.10.1"
@@ -60,7 +68,7 @@
   },
   "_moduleAliases": {
     "$this/src": "./src",
-    "@": "./src"
+    "@/": "./src/"
   },
   "lint-staged": {
     "src/**/*.{ts, tsx, js, jsx}": [

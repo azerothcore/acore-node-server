@@ -33,7 +33,6 @@ export const ROLES = {
   ROLE_SUPERADMIN: 2,
 };
 
-
 const sys = {
   noAuth: false,
 };
@@ -46,7 +45,8 @@ class ACL {
     this.min = Math.min(...arr);
   }
 
-  setLimit(globalLimit) { // limit queries
+  setLimit(globalLimit) {
+    // limit queries
     return async (obj, data, context, info) => {
       const limit = data.limit;
 
@@ -59,7 +59,6 @@ class ACL {
       throw Error('Limit exceeded');
     };
   }
-
 
   checkLevel(user, levels) {
     if (!Array.isArray(levels)) {
@@ -89,7 +88,13 @@ class ACL {
       if (model && field && data[model][field]) {
         id = data[model][field];
       } else {
-        id = data.where ? (field ? data.where[field] : data.where.id) : (data[field] ? data[field] : data.id);
+        id = data.where ?
+          field ?
+            data.where[field] :
+            data.where.id :
+          data[field] ?
+          data[field] :
+          data.id;
       }
 
       if (context.user.id == id) {
@@ -113,7 +118,9 @@ class ACL {
       }
 
       if (!context.user) throw Error('User not found');
-      if (!this.checkLevel(context.user, roles)) throw Error('Permission denied for user:' + context.user.id);
+      if (!this.checkLevel(context.user, roles)) {
+        throw Error('Permission denied for user:' + context.user.id);
+      }
 
       if (filter) {
         return await filter(obj, data, context, info);
@@ -136,19 +143,25 @@ class ACL {
         return Promise.resolve();
       }
       if (!context.user) throw Error('User not found');
-      if (!this.checkLevel(context.user, roles)) throw Error('Permission denied for user:' + context.user.id);
+      if (!this.checkLevel(context.user, roles)) {
+        throw Error('Permission denied for user:' + context.user.id);
+      }
 
-      const args = info.fieldNodes[0].selectionSet.selections.map((selection) => selection.name.value);
-      if (inclusive) { // fields should contain all fields
-        var intersec = fields.filter((value) => -1 !== args.indexOf(value));
+      const args = info.fieldNodes[0].selectionSet.selections.map(
+          (selection) => selection.name.value,
+      );
+      if (inclusive) {
+        // fields should contain all fields
+        const intersec = fields.filter((value) => -1 !== args.indexOf(value));
         if (intersec.length === args.length) {
           return Promise.resolve();
         }
-      } else { // fields contains banned fields
-        var intersec = fields.filter((value) => -1 !== args.indexOf(value));
+      } else {
+        // fields contains banned fields
+        const intersec = fields.filter((value) => -1 !== args.indexOf(value));
         if (intersec.lenght === 0) return Promise.resolve();
       }
-      throw new ApolloError(errors.permission.message, errors.permission.code);// throw Error("You can't see these fields");
+      throw new ApolloError(errors.permission.message, errors.permission.code); // throw Error("You can't see these fields");
     };
   }
 
@@ -162,7 +175,13 @@ class ACL {
     } else if (model && field && data[model] && data[model][field]) {
       id = data[model][field];
     } else {
-      id = data.where ? (field ? data.where[field] : data.where.id) : (data[field] ? data[field] : data.id);
+      id = data.where ?
+        field ?
+          data.where[field] :
+          data.where.id :
+        data[field] ?
+        data[field] :
+        data.id;
     }
 
     if (context.user.id == id) {
@@ -178,8 +197,7 @@ class ACL {
       // fields requested
       const args = [];
       const s = info.fieldNodes[0].selectionSet.selections;
-      for (const k in s) {
-        const selection = s[k];
+      for (const selection of s) {
         if (!selection.selectionSet) args.push(selection.name.value);
       }
       /*
@@ -189,17 +207,22 @@ class ACL {
                 args = info.fieldNodes[0].selectionSet.selections[0].selectionSet.selections[0].selectionSet.selections.map(selection => selection.name.value)
             }*/
 
-
       const publicInclusive = perm[userRole].public.inclusive;
       const publicFields = perm[userRole].public.fields;
 
-      if (publicInclusive) { // publicFields should contain all publicFields
-        var intersec = publicFields.filter((value) => -1 !== args.indexOf(value));
+      if (publicInclusive) {
+        // publicFields should contain all publicFields
+        const intersec = publicFields.filter(
+            (value) => -1 !== args.indexOf(value),
+        );
         if (intersec.length === args.length) {
           returnValue = true;
         }
-      } else { // publicFields contains banned publicFields
-        var intersec = publicFields.filter((value) => -1 !== args.indexOf(value));
+      } else {
+        // publicFields contains banned publicFields
+        const intersec = publicFields.filter(
+            (value) => -1 !== args.indexOf(value),
+        );
         if (intersec.length === 0) {
           returnValue = true;
         }
@@ -208,18 +231,33 @@ class ACL {
       if (!returnValue && perm[userRole].private) {
         const privateInclusive = perm[userRole].private.inclusive;
         const privateFields = perm[userRole].private.fields;
-        const customCheck = perm[userRole].private.customCheck ? perm[userRole].private.customCheck() : true;
-        const isSameUser = perm[userRole].private.isSameUser ? this.sameUserHierachy(perm[userRole].private.isSameUser.model, perm[userRole].private.isSameUser.field, data, context) : false;
+        const customCheck = perm[userRole].private.customCheck ?
+          perm[userRole].private.customCheck() :
+          true;
+        const isSameUser = perm[userRole].private.isSameUser ?
+          this.sameUserHierachy(
+              perm[userRole].private.isSameUser.model,
+              perm[userRole].private.isSameUser.field,
+              data,
+              context,
+          ) :
+          false;
         if (customCheck && isSameUser) {
-          if (privateInclusive) { // privateFields should contain all privateFields
-            const intersec = privateFields.filter((value) => -1 !== args.indexOf(value));
+          if (privateInclusive) {
+            // privateFields should contain all privateFields
+            const intersec = privateFields.filter(
+                (value) => -1 !== args.indexOf(value),
+            );
             const tmp = publicFields.concat(privateFields);
             console.log(args, privateFields, intersec, tmp);
             if (tmp.length >= args.length && intersec != 0) {
               returnValue = true;
             }
-          } else { // privateFields contains banned privateFields
-            var intersec = privateFields.filter((value) => -1 !== args.indexOf(value));
+          } else {
+            // privateFields contains banned privateFields
+            const intersec = privateFields.filter(
+                (value) => -1 !== args.indexOf(value),
+            );
             if (intersec.length === 0) {
               returnValue = true;
             }
@@ -312,10 +350,12 @@ class ACL {
       }
       if (context?.user) {
         const userRole = this.getLevel(context.user);
-        if (this.checkPerm(permObj, userRole, info, data, context)) return Promise.resolve();
+        if (this.checkPerm(permObj, userRole, info, data, context)) {
+          return Promise.resolve();
+        }
       }
 
-      throw new ApolloError(errors.permission.message, errors.permission.code);// Error("You can't see this");
+      throw new ApolloError(errors.permission.message, errors.permission.code); // Error("You can't see this");
     };
   }
 
@@ -331,7 +371,11 @@ class ACL {
         if (obj && obj.constructor.name == relModel && obj[relKey]) {
           id = obj[relKey];
         } else {
-          return Promise.reject('You cannot see all data of this query, use a specific id!');
+          return Promise.reject(
+              new Error(
+                  'You cannot see all data of this query, use a specific id!',
+              ),
+          );
         }
       }
 
@@ -343,7 +387,7 @@ class ACL {
       });
 
       if (!res) {
-        return Promise.reject('This element is not for you!');
+        return Promise.reject(new Error('This element is not for you!'));
       }
 
       return Promise.resolve();

@@ -1,11 +1,11 @@
 import fs from 'fs';
 import path from 'path';
-import Sequelize from 'sequelize';
+import {Sequelize} from 'sequelize';
 import {GraphQLSchema} from 'graphql';
 
 import sgs from 'sequelize-graphql-schema/src/sequelize-graphql-schema';
 
-import sgsConf from '@hw-core/node-platform/src/server/sgsConf';
+// import sgsConf from '@hw-core/node-platform/src/server/sgsConf';
 
 import {
   mergeSchemas,
@@ -16,26 +16,25 @@ import {
 
 import seqAutoImport from 'sequelize-auto-import';
 
-import {conf as config} from '@this/conf';
+import {conf} from '@/conf';
 
 class RealmMgr {
   constructor() {
-    /** @type {Sequelize.Models} */
     this.models = {};
     this.dbs = {};
     this.schemas = [];
     this.mergedSchema;
   }
 
-  load(appModels) {
+  async load(appModels) {
     const db = {};
 
     let directory;
-    for (const realm of config.realms) {
+    for (const realm of conf.realms) {
       for (const dbId of realm.dbconn) {
         /** @constant {string} */
         if (!this.models[dbId]) {
-          const dbVal = config.realm_databases[dbId];
+          const dbVal = conf.realm_databases[dbId];
 
           directory = dbVal.entities.replace('_', '/');
           const modelPath = path.resolve(
@@ -54,9 +53,9 @@ class RealmMgr {
           this.models[dbId] = seqAutoImport(db[dbId], modelPath, {
             exclude: dbVal.exclude,
             recursive: false,
-            /* tableNameFormat: function (modelName) {
-                            return dbId+"_"+modelName;
-                        }*/
+            tableNameFormat: function(modelName) {
+              return dbId + '_' + modelName;
+            },
           });
 
           this.models[dbId]._sequelize = db[dbId];
@@ -64,7 +63,7 @@ class RealmMgr {
       }
 
       for (const dbId of realm.dbconn) {
-        const dbVal = config.realm_databases[dbId];
+        const dbVal = conf.realm_databases[dbId];
         const adaptersPath = path.resolve(
             __dirname +
             '/adapters/' +
@@ -72,7 +71,9 @@ class RealmMgr {
             '/index.js',
         );
         if (fs.existsSync(adaptersPath)) {
-          const {dbAdapter /* , schemaAdapter */} = await import(adaptersPath);
+          const {dbAdapter /* , schemaAdapter */} = await import(
+              adaptersPath,
+          );
 
           dbAdapter(dbId, dbVal, db[dbId], this.models, appModels);
         }
@@ -81,14 +82,14 @@ class RealmMgr {
         // we need generateSchema before "associate()" to set default values for graphql models property
         // TODO: find a more elegant way
         this.models[dbId]._graphschema = new GraphQLSchema(
-            sgs(sgsConf).generateSchema(this.models[dbId]),
+            sgs(/* sgsConf */).generateSchema(this.models[dbId]),
         );
       }
 
       let dbVal;
       for (const dbId of realm.dbconn) {
         /** @constant {string} */
-        dbVal = config.realm_databases[dbId];
+        dbVal = conf.realm_databases[dbId];
 
         Object.keys(this.models[dbId]).forEach(
             (key) =>
@@ -97,9 +98,10 @@ class RealmMgr {
         );
       }
 
-      for (const [c, dbId] of realm.dbconn.entries()) {
+      for (const [c, dbId] of realm.dbconn) {
+        console.log(c, dbId);
         this.models[dbId]._graphschema = new GraphQLSchema(
-            sgs(sgsConf).generateSchema(this.models[dbId]),
+            sgs(/* sgsConf*/).generateSchema(this.models[dbId]),
         );
 
         const adaptersPath = path.resolve(
@@ -109,7 +111,9 @@ class RealmMgr {
             '/index.js',
         );
         if (fs.existsSync(adaptersPath)) {
-          const {schemaAdapter /* , dbAdapter */} = await import(adaptersPath);
+          const {schemaAdapter /* , dbAdapter */} = await import(
+              adaptersPath,
+          );
           schemaAdapter(this.models[dbId]);
         }
 
@@ -118,6 +122,7 @@ class RealmMgr {
     }
 
     for (const [m] of this.dbs.entries()) {
+      console.log(m);
       // avoid renaming for some shared types
       // PS maybe there's a better way
       const blackList = ['SequelizeJSON', 'Date', 'PageInfo'];

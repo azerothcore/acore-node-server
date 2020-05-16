@@ -140,8 +140,6 @@ if (sys.noAuth) {
  *
  * filename:  img-<userid>-<timestamp>.<ext>
  *
- * @param {string}   model          name of the model.
- * @param {string}   path           path where to save the file.
  */
 /*
 export function uploadFile(model, path) {
@@ -205,9 +203,7 @@ export function uploadFile(model, path) {
 */
 
 /**
- *
- * @param  {...SGSMiddleware} middlewares - List of middlewares as a promise chain
- * @returns {Promise}
+ * @param {...any} middlewares
  */
 export function applyMiddlewares(...middlewares) {
   return async (obj, data, context, info) => {
@@ -224,15 +220,7 @@ export function applyMiddlewares(...middlewares) {
 }
 
 /**
- * @typedef {Object} cryptPassResult
- * @property {string} hash - Hash concat. with password
- * @property {string} pass - Crypted password
- * @property {number} saltRound - crypting rounds
- */
-/**
- *
- * @param {string} password
- * @returns {cryptPassResult}
+ * @param password
  */
 export async function cryptPass(password) {
   const saltRounds = 8;
@@ -260,10 +248,8 @@ export async function cryptPass(password) {
  * subject of the query/mutation. It allows you to avoid fetching/editing of data not
  * owned by the user.
  *
- * @param {string} [model=undefined] : model name where get the field about user id (field parameter)
- * @param {string} [field=undefined] : you can specify model and field where retrieve userid from mutation data,
- *  otherwise it tries to get from where
- * @returns {SGSMiddleware} Middleware for graphql hooks/api
+ * @param model
+ * @param field
  */
 export function sameUser(model, field) {
   return (obj, data, context, info) => {
@@ -288,10 +274,6 @@ export function sameUser(model, field) {
 
 /**
  * This function create a 8 characters random string
- *
- * @param {}
- *
- * @returns {string} 8 char string
  */
 export function random() {
   const anysize = 8;

@@ -1,10 +1,11 @@
+import {boot} from './boot/index';
+
 /**
  *
  */
 function run() {
-  console.log('Hello World');
+  // INTEGRATE sRealmMgr
+  boot();
 }
 
-export {
-  run,
-};
+export {run};

@@ -21,14 +21,32 @@ const conf = {
     enabled:
       process.env.HTTPS === '1' && process.env.NODE_ENV === 'development',
   },
+  express: {
+    useCors: true,
+    bodyParser: {
+      json: {
+        limit: '1mb',
+      },
+    },
+  },
+  mailer: {
+    service: 'gmail',
+    port: 993,
+    auth: {
+      user: '',
+      pass: '',
+    },
+  },
   port: parseInt(process.env.PORT) || 0, // 0 to automatically assign a port
   fastifyConf: {
     get https() {
-      return conf.ssl.enabled ? {
-        // key: fs.readFileSync(path.join(__dirname, remoteHost + '.pkey')).toString(),
-        // cert: fs.readFileSync(path.join(__dirname, remoteHost + '.crt')).toString(),
-        allowHTTP1: true,
-      } : undefined;
+      return conf.ssl.enabled ?
+        {
+          // key: fs.readFileSync(path.join(__dirname, remoteHost + '.pkey')).toString(),
+          // cert: fs.readFileSync(path.join(__dirname, remoteHost + '.crt')).toString(),
+          allowHTTP1: true,
+        } :
+        undefined;
     },
   },
 };
