@@ -2,10 +2,10 @@ import fs from 'fs';
 import path from 'path';
 import {Sequelize} from 'sequelize';
 import {GraphQLSchema} from 'graphql';
+import graphcraft from 'graphcraft';
+import gcOptions from '@/service/gcOptions';
 
-import sgs from 'sequelize-graphql-schema/src/sequelize-graphql-schema';
-
-// import sgsConf from '@hw-core/node-platform/src/server/sgsConf';
+const {generateSchema} = graphcraft(gcOptions);
 
 import {
   mergeSchemas,
@@ -58,7 +58,10 @@ class RealmMgr {
               },
             });
 
+            // (margherita) HACK
             this.models[dbId]._sequelize = db[dbId];
+            this.models[dbId].Sequelize = Sequelize;
+            this.models[dbId].sequelize = db[dbId];
           }
         }
       }
@@ -73,6 +76,31 @@ class RealmMgr {
               (dbVal.adapters ? dbVal.adapters : directory) +
               '/index.js',
           );
+
+          if (dbVal.accountDbId) {
+            this.models[dbId] = {
+              ...this.models[dbId],
+              ...this.models[dbVal.accountDbId],
+            };
+
+            // this.models[dbVal.accountDbId] = {
+            //  ...this.models[dbVal.accountDbId],
+            //  ...this.models[dbId],
+            // };
+          }
+
+          if (dbVal.worldDbId) {
+            this.models[dbId] = {
+              ...this.models[dbId],
+              ...this.models[dbVal.worldDbId],
+            };
+
+            // this.models[dbVal.worldDbId] = {
+            //   ...this.models[dbVal.worldDbId],
+            //   ...this.models[dbId],
+            // };
+          }
+
           if (fs.existsSync(adaptersPath)) {
             const {
               dbAdapter,
@@ -86,7 +114,7 @@ class RealmMgr {
           // we need generateSchema before "associate()" to set default values for graphql models property
           // TODO: find a more elegant way
           this.models[dbId]._graphschema = new GraphQLSchema(
-              sgs(/* sgsConf */).generateSchema(this.models[dbId]),
+              await generateSchema(this.models[dbId]),
           );
         }
       }
@@ -108,8 +136,9 @@ class RealmMgr {
       for (const c in realm.dbconn) {
         if (Object.prototype.hasOwnProperty.call(realm.dbconn, c)) {
           const dbId = realm.dbconn[c];
+
           this.models[dbId]._graphschema = new GraphQLSchema(
-              sgs(/* sgsConf*/).generateSchema(this.models[dbId]),
+              await generateSchema(this.models[dbId]),
           );
 
           const adaptersPath = path.resolve(
@@ -145,6 +174,7 @@ class RealmMgr {
             return blackList.indexOf(name) < 0 ? `${m}_${name}` : name;
           }),
         ]);
+
         this.schemas.push(trasformedSchema);
       }
     }

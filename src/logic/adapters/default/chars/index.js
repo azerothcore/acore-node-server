@@ -17,8 +17,8 @@ function schemaAdapter(model) {
  * @param appModels
  */
 function dbAdapter(dbId, dbVal, sequelize, models, appModels) {
-  characters.dbAdapter(dbId, dbVal, sequelize, models, appModels);
   guild.dbAdapter(dbId, dbVal, sequelize, models, appModels);
+  characters.dbAdapter(dbId, dbVal, sequelize, models, appModels);
 }
 
 export {

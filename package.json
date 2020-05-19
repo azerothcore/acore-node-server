@@ -39,7 +39,6 @@
     "noderouter": "https://github.com/azerothcore/noderouter.git",
     "sequelize": "^5.21.1",
     "sequelize-auto-import": "^1.1.1",
-    "sequelize-graphql-schema": "^0.1.71",
     "sha1": "^1.1.1",
     "sofa-api": "^0.6.0",
     "stream-to-array": "^2.3.0",

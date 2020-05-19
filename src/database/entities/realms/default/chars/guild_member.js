@@ -9,6 +9,7 @@ module.exports = function(sequelize, DataTypes) {
     guid: {
       type: DataTypes.INTEGER(10).UNSIGNED,
       allowNull: false,
+      primaryKey: true,
     },
     rank: {
       type: DataTypes.INTEGER(3).UNSIGNED,

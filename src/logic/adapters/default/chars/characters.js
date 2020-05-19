@@ -19,14 +19,26 @@ function dbAdapter(dbId, dbVal, sequelize, models, appModels) {
   const accountDbId = dbVal['accountDbId'];
 
   characters.associate = () => {
+    models[dbId].guild_member.belongsTo(models[dbId].characters, {
+      foreignKey: 'guid',
+      sourceKey: 'guid',
+    });
+
+    models[dbId].characters.hasOne(models[dbId].guild_member, {
+      foreignKey: 'guid',
+      targetKey: 'guid',
+    });
+
+    // Ship.belongsTo(Captain, { targetKey: 'name', foreignKey: 'captainName' });
     characters.belongsTo(models[accountDbId].account, {
       as: 'charAccount',
       foreignKey: 'account',
-      sourceKey: 'guid',
+      targetKey: 'id',
     });
+
     models[accountDbId].account.hasMany(characters, {
       foreignKey: 'account',
-      targetKey: 'guid',
+      sourceKey: 'id',
     });
   };
 
