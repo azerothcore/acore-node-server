@@ -16,7 +16,7 @@ It can be extended and customized with new features and extra databases support.
 1. clone this repo
 2. run `npm install`
 3. copy files in /conf/dist folder under conf/ folder and configure them with your connection info
-4. run `npm start`
+4. run `npm run db:all && npm run start`
 5. Open the url showed in your console to browse the graphql playground where you can get all the documentation about the APIs
 
 ### with docker
