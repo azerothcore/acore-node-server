@@ -11,21 +11,19 @@
  * values of /conf/dist/conf.js, so you can also directly change the
  * needed variables without copying the entire content of this file.
  */
-const serviceName = process.env.SERVICE_NAME || 'acore-node-server';
-const apiPrefix = process.env.API_PREFIX || '/';
 
 const conf = {
-  serverHost: '0.0.0.0',
   port: parseInt(process.env.PORT) || 0, // 0 to automatically assign a port
-  serviceName,
-  apiPrefix,
-  clientUrl: process.env.NODE_ENV == 'production' ? 'https://127.0.0.1' : 'http://127.0.0.1:3000',
+  // optional, needed for emails (registration/pass recovery)
+  clientUrl:
+    process.env.NODE_ENV == 'production' ?
+      'https://127.0.0.1' :
+      'http://127.0.0.1:3000',
   secret: '&$fx#W*!aRlh^LvfYA',
+  // optional, for wordpress integration
   wp_secret: '9E}szZK#N^d*]*p{$R',
-  captchaKey: 'replace_key_here',
   ssl: {
-    enabled:
-      process.env.HTTPS === '1' && process.env.NODE_ENV === 'development',
+    enabled: process.env.HTTPS === '1' && process.env.NODE_ENV === 'development',
   },
   express: {
     useCors: true,
@@ -41,17 +39,6 @@ const conf = {
     auth: {
       user: '',
       pass: '',
-    },
-  },
-  fastifyConf: {
-    get https() {
-      return conf.ssl.enabled ?
-        {
-          // key: fs.readFileSync(path.join(__dirname, remoteHost + '.pkey')).toString(),
-          // cert: fs.readFileSync(path.join(__dirname, remoteHost + '.crt')).toString(),
-          allowHTTP1: true,
-        } :
-        undefined;
     },
   },
   realm_databases: {
@@ -71,7 +58,12 @@ const conf = {
       user: 'acore',
       pass: 'acore',
       include: [],
-      exclude: ['version_db_world.js', 'event_scripts.js', 'spell_custom_attr.js', 'spell_scripts.js'],
+      exclude: [
+        'version_db_world.js',
+        'event_scripts.js',
+        'spell_custom_attr.js',
+        'spell_scripts.js',
+      ],
       entities: 'default/world',
       adapters: 'default/world', // can be omitted, default will be used
     },
@@ -81,22 +73,29 @@ const conf = {
       user: 'acore',
       pass: 'acore',
       include: [],
-      exclude: ['version_db_characters.js', 'account_data.js', 'character_account_data.js', 'quest_tracker.js'],
+      exclude: [
+        'version_db_characters.js',
+        'account_data.js',
+        'character_account_data.js',
+        'quest_tracker.js',
+      ],
       entities: 'default/chars',
       adapters: 'default/chars', // can be omitted, default will be used
       accountDbId: 'default_auth',
       worldDbId: 'default_world',
     },
   },
-  realms: [{
-    id: 1,
-    name: 'default',
-    dbconn: {
-      'auth': 'default_auth',
-      'world': 'default_world',
-      'chars': 'default_chars',
+  realms: [
+    {
+      id: 1,
+      name: 'default',
+      dbconn: {
+        auth: 'default_auth',
+        world: 'default_world',
+        chars: 'default_chars',
+      },
     },
-  }],
+  ],
   modules: {
     exclude: [],
   },
