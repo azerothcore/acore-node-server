@@ -1,0 +1,666 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>&quot;logic/adapters/default/chars/characters&quot; | @azerothcore/node-servicemodule</title>
+	<meta name="description" content="Documentation for @azerothcore/node-servicemodule">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.json" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">@azerothcore/node-servicemodule</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../globals.html">Globals</a>
+				</li>
+				<li>
+					<a href="_logic_adapters_default_chars_characters_.html">&quot;logic/adapters/default/chars/characters&quot;</a>
+				</li>
+			</ul>
+			<h1>Module &quot;logic/adapters/default/chars/characters&quot;</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section tsd-is-not-exported">
+							<h3>Variables</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported"><a href="_logic_adapters_default_chars_characters_.html#op" class="tsd-kind-icon">Op</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported"><a href="_logic_adapters_default_chars_characters_.html#recover_char_account" class="tsd-kind-icon">RECOVER_<wbr>CHAR_<wbr>ACCOUNT</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Functions</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_logic_adapters_default_chars_characters_.html#dbadapter" class="tsd-kind-icon">db<wbr>Adapter</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_logic_adapters_default_chars_characters_.html#schemaadapter" class="tsd-kind-icon">schema<wbr>Adapter</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
+				<h2>Variables</h2>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported">
+					<a name="op" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> Op</h3>
+					<div class="tsd-signature tsd-kind-icon">Op<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>adjacent<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>all<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>and<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>any<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>between<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>col<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>contained<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>contains<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>endsWith<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>eq<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>gt<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>gte<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>iLike<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>iRegexp<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>in<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>is<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>like<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>lt<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>lte<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>ne<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>noExtendLeft<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>noExtendRight<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>not<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>notBetween<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>notILike<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>notIRegexp<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>notIn<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>notLike<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>notRegexp<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>or<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>overlap<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>placeholder<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>regexp<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>startsWith<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>strictLeft<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>strictRight<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>substring<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">; </span>values<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = Sequelize.Op</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/azerothcore/acore-node-server/blob/182dd11/src/logic/adapters/default/chars/characters.js#L7">src/logic/adapters/default/chars/characters.js:7</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> adjacent<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator -|- (PG range is adjacent to operator)</p>
+									</div>
+									<pre><code class="language-js">[Op.adjacent]: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>]</code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">-|- [1, 2)</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> all<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator ALL</p>
+									</div>
+									<pre><code class="language-js">[Op.gt]: {
+ [Op.all]: literal(<span class="hljs-string">&#x27;SELECT 1&#x27;</span>)
+}</code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">&gt; ALL (SELECT 1)</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> and<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator AND</p>
+									</div>
+									<pre><code class="language-js">[Op.and]: {<span class="hljs-attr">a</span>: <span class="hljs-number">5</span>}</code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">AND (a = 5)</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> any<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator ANY ARRAY (PG only)</p>
+									</div>
+									<pre><code class="language-js">[Op.any]: [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]</code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">ANY ARRAY[2, 3]::INTEGER</code></pre>
+									<p>Operator LIKE ANY ARRAY (also works for iLike and notLike)</p>
+									<pre><code class="language-js">[Op.like]: { [Op.any]: [<span class="hljs-string">&#x27;cat&#x27;</span>, <span class="hljs-string">&#x27;hat&#x27;</span>]}</code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">LIKE ANY ARRAY[&#x27;cat&#x27;, &#x27;hat&#x27;]</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> between<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator BETWEEN</p>
+									</div>
+									<pre><code class="language-js">[Op.between]: [<span class="hljs-number">6</span>, <span class="hljs-number">10</span>]</code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">BETWEEN 6 AND 10</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> col<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>With dialect specific column identifiers (PG in this example)</p>
+									</div>
+									<pre><code class="language-js">[Op.col]: <span class="hljs-string">&#x27;user.organization_id&#x27;</span></code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">= &quot;user&quot;.&quot;organization_id&quot;</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> contained<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator &lt;@ (PG array contained by operator)</p>
+									</div>
+									<pre><code class="language-js">[Op.contained]: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>]</code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">&lt;@ [1, 2)</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> contains<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator @&gt; (PG array contains operator)</p>
+									</div>
+									<pre><code class="language-js">[Op.contains]: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>]</code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">@&gt; [1, 2)</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> ends<wbr>With<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator LIKE</p>
+									</div>
+									<pre><code class="language-js">[Op.endsWith]: <span class="hljs-string">&#x27;hat&#x27;</span></code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">LIKE &#x27;%hat&#x27;</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> eq<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator =</p>
+									</div>
+									<pre><code class="language-js">[Op.eq]: <span class="hljs-number">3</span></code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">= 3</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> gt<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator &gt;</p>
+									</div>
+									<pre><code class="language-js">[Op.gt]: <span class="hljs-number">6</span></code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">&gt; 6</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> gte<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator &gt;=</p>
+									</div>
+									<pre><code class="language-js">[Op.gte]: <span class="hljs-number">6</span></code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">&gt;= 6</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> i<wbr>Like<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator ILIKE (case insensitive) (PG only)</p>
+									</div>
+									<pre><code class="language-js">[Op.iLike]: <span class="hljs-string">&#x27;%hat&#x27;</span></code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">ILIKE &#x27;%hat&#x27;</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> i<wbr>Regexp<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator ~* (PG only)</p>
+									</div>
+									<pre><code class="language-js">[Op.iRegexp]: <span class="hljs-string">&#x27;^[h|a|t]&#x27;</span></code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">~* &#x27;^[h|a|t]&#x27;</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> in<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator IN</p>
+									</div>
+									<pre><code class="language-js">[Op.in]: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>]</code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">IN [1, 2]</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> is<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator IS</p>
+									</div>
+									<pre><code class="language-js">[Op.is]: <span class="hljs-literal">null</span></code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">IS null</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> like<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator LIKE</p>
+									</div>
+									<pre><code class="language-js">[Op.like]: <span class="hljs-string">&#x27;%hat&#x27;</span></code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">LIKE &#x27;%hat&#x27;</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> lt<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator &lt;</p>
+									</div>
+									<pre><code class="language-js">[Op.lt]: <span class="hljs-number">10</span></code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">&lt; 10</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> lte<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator &lt;=</p>
+									</div>
+									<pre><code class="language-js">[Op.lte]: <span class="hljs-number">10</span></code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">&lt;= 10</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> ne<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator !=</p>
+									</div>
+									<pre><code class="language-js">[Op.ne]: <span class="hljs-number">20</span></code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">!= 20</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> no<wbr>Extend<wbr>Left<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator &amp;&gt; (PG range does not extend to the left of operator)</p>
+									</div>
+									<pre><code class="language-js">[Op.noExtendLeft]: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>]</code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">&amp;&gt; [1, 2)</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> no<wbr>Extend<wbr>Right<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator &amp;&lt; (PG range does not extend to the right of operator)</p>
+									</div>
+									<pre><code class="language-js">[Op.noExtendRight]: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>]</code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">&amp;&lt; [1, 2)</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> not<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator NOT</p>
+									</div>
+									<pre><code class="language-js">[Op.not]: <span class="hljs-literal">true</span></code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">IS NOT TRUE</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> not<wbr>Between<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator NOT BETWEEN</p>
+									</div>
+									<pre><code class="language-js">[Op.notBetween]: [<span class="hljs-number">11</span>, <span class="hljs-number">15</span>]</code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">NOT BETWEEN 11 AND 15</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> notILike<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator NOT ILIKE (case insensitive) (PG only)</p>
+									</div>
+									<pre><code class="language-js">[Op.notILike]: <span class="hljs-string">&#x27;%hat&#x27;</span></code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">NOT ILIKE &#x27;%hat&#x27;</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> notIRegexp<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator !~* (PG only)</p>
+									</div>
+									<pre><code class="language-js">[Op.notIRegexp]: <span class="hljs-string">&#x27;^[h|a|t]&#x27;</span></code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">!~* &#x27;^[h|a|t]&#x27;</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> not<wbr>In<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator NOT IN</p>
+									</div>
+									<pre><code class="language-js">[Op.notIn]: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>]</code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">NOT IN [1, 2]</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> not<wbr>Like<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator NOT LIKE</p>
+									</div>
+									<pre><code class="language-js">[Op.notLike]: <span class="hljs-string">&#x27;%hat&#x27;</span></code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">NOT LIKE &#x27;%hat&#x27;</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> not<wbr>Regexp<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator NOT REGEXP (MySQL/PG only)</p>
+									</div>
+									<pre><code class="language-js">[Op.notRegexp]: <span class="hljs-string">&#x27;^[h|a|t]&#x27;</span></code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">NOT REGEXP/!~ &#x27;^[h|a|t]&#x27;</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> or<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator OR</p>
+									</div>
+									<pre><code class="language-js">[Op.or]: [{<span class="hljs-attr">a</span>: <span class="hljs-number">5</span>}, {<span class="hljs-attr">a</span>: <span class="hljs-number">6</span>}]</code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">(a = 5 OR a = 6)</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> overlap<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator &amp;&amp; (PG array overlap operator)</p>
+									</div>
+									<pre><code class="language-js">[Op.overlap]: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>]</code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">&amp;&amp; [1, 2)</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> placeholder<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Internal placeholder</p>
+									</div>
+									<pre><code class="language-js">[Op.placeholder]: <span class="hljs-literal">true</span></code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> regexp<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator REGEXP (MySQL/PG only)</p>
+									</div>
+									<pre><code class="language-js">[Op.regexp]: <span class="hljs-string">&#x27;^[h|a|t]&#x27;</span></code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">REGEXP/~ &#x27;^[h|a|t]&#x27;</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> starts<wbr>With<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator LIKE</p>
+									</div>
+									<pre><code class="language-js">[Op.startsWith]: <span class="hljs-string">&#x27;hat&#x27;</span></code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">LIKE &#x27;hat%&#x27;</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> strict<wbr>Left<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator &lt;&lt; (PG range strictly left of operator)</p>
+									</div>
+									<pre><code class="language-js">[Op.strictLeft]: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>]</code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">&lt;&lt; [1, 2)</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> strict<wbr>Right<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator &gt;&gt; (PG range strictly right of operator)</p>
+									</div>
+									<pre><code class="language-js">[Op.strictRight]: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>]</code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">&gt;&gt; [1, 2)</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> substring<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator LIKE</p>
+									</div>
+									<pre><code class="language-js">[Op.substring]: <span class="hljs-string">&#x27;hat&#x27;</span></code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql">LIKE &#x27;%hat%&#x27;</code></pre>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> values<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">symbol</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Operator VALUES</p>
+									</div>
+									<pre><code class="language-js">[Op.values]: [<span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>]</code></pre>
+									<p>In SQL</p>
+									<pre><code class="language-sql"><span class="hljs-keyword">VALUES</span> (<span class="hljs-number">4</span>), (<span class="hljs-number">5</span>), (<span class="hljs-number">6</span>)</code></pre>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported">
+					<a name="recover_char_account" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> RECOVER_<wbr>CHAR_<wbr>ACCOUNT</h3>
+					<div class="tsd-signature tsd-kind-icon">RECOVER_<wbr>CHAR_<wbr>ACCOUNT<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">5</span><span class="tsd-signature-symbol"> = 5</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/azerothcore/acore-node-server/blob/182dd11/src/logic/adapters/default/chars/characters.js#L5">src/logic/adapters/default/chars/characters.js:5</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Functions</h2>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="dbadapter" class="tsd-anchor"></a>
+					<h3>db<wbr>Adapter</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">db<wbr>Adapter<span class="tsd-signature-symbol">(</span>dbId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, dbVal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, sequelize<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">&quot;/home/runner/work/acore-node-server/acore-node-server/node_modules/sequelize/types/index&quot;</span>, models<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, appModels<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/azerothcore/acore-node-server/blob/182dd11/src/logic/adapters/default/chars/characters.js#L17">src/logic/adapters/default/chars/characters.js:17</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<dl class="tsd-comment-tags">
+									<dt>instance</dt>
+									<dd></dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>dbId: <span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li>
+									<h5>dbVal: <span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li>
+									<h5>sequelize: <span class="tsd-signature-type">&quot;/home/runner/work/acore-node-server/acore-node-server/node_modules/sequelize/types/index&quot;</span></h5>
+								</li>
+								<li>
+									<h5>models: <span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li>
+									<h5>appModels: <span class="tsd-signature-type">Object</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="schemaadapter" class="tsd-anchor"></a>
+					<h3>schema<wbr>Adapter</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">schema<wbr>Adapter<span class="tsd-signature-symbol">(</span>model<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/azerothcore/acore-node-server/blob/182dd11/src/logic/adapters/default/chars/characters.js#L266">src/logic/adapters/default/chars/characters.js:266</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>model: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="../globals.html"><em>Globals</em></a>
+					</li>
+					<li class="current tsd-kind-module">
+						<a href="_logic_adapters_default_chars_characters_.html">&quot;logic/adapters/default/chars/characters&quot;</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported">
+						<a href="_logic_adapters_default_chars_characters_.html#op" class="tsd-kind-icon">Op</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported">
+						<a href="_logic_adapters_default_chars_characters_.html#recover_char_account" class="tsd-kind-icon">RECOVER_<wbr>CHAR_<wbr>ACCOUNT</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="_logic_adapters_default_chars_characters_.html#dbadapter" class="tsd-kind-icon">db<wbr>Adapter</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="_logic_adapters_default_chars_characters_.html#schemaadapter" class="tsd-kind-icon">schema<wbr>Adapter</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="../assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>
