@@ -1,12 +1,12 @@
 remote_theme: Drassil/git-wiki-theme@master
 # (string) Title of your wiki
-title: "Servicemodule"
-baseurl: /servicemodule/
+title: "ACore-Node-Server"
+baseurl: /acore-node-server/
 # (string) if you've installed your wiki in subfolder, you must change this configuration
 # with your folder name, otherwise leave it empty
 # baseurl: "/git-wiki-skeleton"
 # (string) Description of your wiki
-description: 
+description: Official API layer for AzerothCore
 # (boolean) Enable/disable wiki page list in sidebar
 show_wiki_pages: true
 # (integer) Maximum number of wiki page to shown in sidebar
